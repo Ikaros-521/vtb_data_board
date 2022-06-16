@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>VTB数据看板</title>
+    <link rel="shortcut icon" href="img/logo.png">
+    <link rel="icon" type="image/png" href="img/logo.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/logo.png">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <style>
+        #detail_page a {
+            text-decoration: underline;
+        }
+
+        #resource_page a{
+            text-decoration: underline;
+            font-size: 18px;
+            line-height: 40px;
+        }
+
+        #resource_page, #about_page {
+            display: none;
+        }
+        
+        #chart-container {
+            position: relative;
+            height: 50vh;
+            overflow: hidden;
+        }
+
+        #chart-container2 {
+            position: relative;
+            height: 50vh;
+            overflow: hidden;
+        }
+
+        .layui-form-label {
+            width: auto;
+        }
+
+        .fileDiv {
+            width: 140px;
+            height: 40px;
+            background-color: #1e9fff;
+            line-height: 40px;
+            text-align: center;
+            color: #FFF;
+            border-radius: 3px;
+            /*border: 1px solid #999;*/
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fileDiv input {
+            width: 100px;
+            height: 40px;
+            background-color: #FFF;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            -ms-filter: 'alpha(opacity=0)';
+        }
+    </style>
+    <script src="js/echarts.js"></script>
+</head>
+
+<body>
+    <div>
+        <ul class="layui-nav" lay-filter="">
+            <li class="layui-nav-item layui-this"><a href="#" onclick="page_change('detail_page')">首页</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('resource_page')">资源导航</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('about_page')">关于</a></li>
+        </ul>
+    </div>
+    <div id="detail_page">
+        <div id="vtb_screen" style="text-align: center;">
+            <div class="layui-form ba-search-box" id="uid">
+                <input type="radio" name="uid" value="2051555906" title="-official-Spi酱" lay-filter="uid">
+                <input type="radio" name="uid" value="125979457" title="間宵雫_Official" lay-filter="uid">
+                <input type="radio" name="uid" value="1300421811" title="竜輝音緒流_Official" lay-filter="uid">
+                <input type="radio" name="uid" value="1569389574" title="艾玛莉莉丝-channel" lay-filter="uid">
+                <input type="radio" name="uid" value="1944648347" title="御先蔵馬official" lay-filter="uid">
+                <input type="radio" name="uid" value="2094031249" title="火羽ひのめ" lay-filter="uid">
+            </div>
+            <div style="margin: 10px;">
+                <div class="layui-input-inline">
+                    <label class="layui-form-label">用户UID</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="input_uid" lay-verify="required" placeholder="请输入用户UID，例：2051555906" class="layui-input" autocomplete="off">
+                    </div>
+                    <button type="button" class="layui-btn layui-btn-normal" onclick="search()">搜索</button>
+                </div>
+            </div>
+            <div class="layui-btn-container">
+                <button type="button" class="layui-btn layui-btn-normal" onclick="show_datas(0)">显示直播数据</button>
+                <button type="button" class="layui-btn layui-btn-normal" onclick="show_datas(1)">显示用户数据</button>
+                <button type="button" class="layui-btn layui-btn-normal" onclick="download_all_base_data()">下载离线数据包</button>
+            </div>
+            <div style="padding-left: 40%;margin: 10px;">
+                <div class="fileDiv">
+                    <span>上传直播数据文件</span>
+                    <input type="file" name="file" value="上传直播数据文件" onchange="upload_file(this)" />
+                </div>
+            </div>
+        </div>
+        
+        <div id="base_info">
+            <div id="chart_main">
+                <div id="chart-container"></div>
+            </div>
+            <div class="layui-container" style="width: 95%;">
+                <table class="layui-table">
+                    <colgroup>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>封面</th>
+                            <th>标题</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>弹幕</th>
+                            <th>观看人数</th>
+                            <th>弹幕密度</th>
+                            <th>礼物收益</th>
+                            <th>SC收益</th>
+                            <th>合计收益</th>
+                            <th>本/上月收益</th>
+                        </tr>
+                    </thead>
+                    <tbody id="base_info_tbody">
+    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <div id="self_info">
+            <div id="chart_main2">
+                <div id="chart-container2"></div>
+            </div>
+            <div class="layui-container" style="width: 95%;">
+                <table class="layui-table">
+                    <colgroup>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>UID</th>
+                            <th>直播间号</th>
+                            <th>头像</th>
+                            <th>总督</th>
+                            <th>提督</th>
+                            <th>舰长</th>
+                        </tr>
+                    </thead>
+                    <tbody id="self_guard_tbody">
+    
+                    </tbody>
+                </table>
+            </div>
+            <div class="layui-container" style="width: 95%;">
+                <table class="layui-table">
+                    <colgroup>
+                        <col>
+                        <col>
+                        <col>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>粉丝数</th>
+                            <th>粉丝变化</th>
+                            <th>时间</th>
+                        </tr>
+                    </thead>
+                    <tbody id="self_info_tbody">
+    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="resource_page">
+        <div class="layui-field-box">
+            <div class="layui-card">
+                <div class="layui-card-header">主播数据查询网址</div>
+                <div class="layui-card-body">
+                    <a href="https://vup.darkflame.ga/ranking/month?sortby=income" target="_blank">vup.darkflame.ga：B站营收月榜查询</a>
+                    <br>
+                    <a href="https://matsuri.icu/" target="_blank">matsuri.icu：主播弹幕、收益等相关信息查询</a>
+                    <br>
+                    <a href="https://asdanmaku.com/" target="_blank">asdanmaku.com：主播弹幕、收益等相关信息查询2（要寄了）</a>
+                    <br>
+                    <a href="http://biligank.com/" target="_blank">biligank.com：主播弹幕、收益等相关信息查询3（刚开）</a>
+                    <br>
+                    <a href="https://huolonglive.com/#/" target="_blank">huolonglive.com：火龙榜，同传榜单</a>
+                    <br>
+                    <a href="https://vtbs.moe/" target="_blank">vtbs.moe：主播详情查询（舰团、粉丝变化等）</a>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-header">语音翻译软件</div>
+                <div class="layui-card-body">
+                    <a href="https://sayonari.coresv.com/ninshikiChan/20210822_config.html" target="_blank">音声認識字幕ちゃん：免费在线语音识别转换软件</a>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-header">直播推流软件</div>
+                <div class="layui-card-body">
+                    <a href="https://obsproject.com/" target="_blank">OBS：OBS是用于视频录制和流媒体直播的免费开源软件</a>
+                    <a href="data/obs.png" target="_blank">外观参考</a>
+                    <br>
+                    <a href="https://live.bilibili.com/liveHime" target="_blank">哔哩哔哩直播姬：官方b站直播软件</a>
+                    <a href="data/zbj.pngf" target="_blank">简述参考</a>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-header">直播同传辅助</div>
+                <div class="layui-card-body">
+                    <a href="https://github.com/FHChen0420/LyricDanmu/releases" target="_blank">LyricDanmu：B站直播歌词/同传弹幕发送工具</a>
+                    <a href="data/LyricDanmu.png" target="_blank">使用演示</a>
+                    <br>
+                    <a href="data/web-Danmu-v2.1.js" target="_blank">PC浏览器自动补括号+一键常用语 辅助JS程序</a>
+                    <a href="data/web-Danmu-v2.0.gif" target="_blank">使用演示</a>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-header">数据获取程序</div>
+                <div class="layui-card-body">
+                    <a href="data/get_all_ship.js" target="_blank">大航海用户数据获取-PC浏览器-JS程序</a>
+                    <a href="data/get_all_ship.gif" target="_blank">使用演示</a>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-header">直播弹幕插件</div>
+                <div class="layui-card-body">
+                    <a href="https://github.com/xfgryujk/blivechat/releases" target="_blank">blivechat：用于OBS的仿YouTube风格的bilibili直播评论栏</a>
+                    <a href="https://github.com/xfgryujk/blivechat/blob/master/README.md" target="_blank">使用说明</a>
+                    <br>
+                    <a href="https://rec.danmuji.org/" target="_blank">B站弹幕姬：开源、简洁的B站直播弹幕工具</a>
+                    <a href="data/dmj.png" target="_blank">简述参考</a>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-header">录播软件</div>
+                <div class="layui-card-body">
+                    <a href="https://rec.danmuji.org/" target="_blank">B站录播姬：哔哩哔哩直播自动录制工具</a>
+                    <a href="data/luboji.gif" target="_blank">使用演示</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="about_page">
+        <div class="layui-container">
+        听我说谢谢你
+        </div>
+    </div>
+
+
+    <!-- 引入 layui.js 的 <script> 标签最好放置在 html 末尾 -->
+    <script src="layui/layui.js"></script>
+    <script>
+        // 存储用户基础JSON数据
+        var user_base_data_json;
+        // 存储当前数据的数据源域名
+        var data_src = "api.matsuri.icu";
+        // 存储用户详细JSON数据
+        var user_detail_data_json;
+        // 存储用户个人页JSON数据
+        var user_self_data_json;
+        // 存储当月月份
+        var now_month;
+        // 存储当月收益总和
+        var now_month_total_reward = 0;
+        // 存储上月收益总和
+        var last_month_total_reward = 0;
+        // 加载层
+        var load_index;
+
+        // 获取当月月份
+        now_month = new Date(Date.now()).getMonth() + 1;
+
+        layui.use(function () {
+            var layer = layui.layer
+                , form = layui.form
+                , laypage = layui.laypage
+                , element = layui.element
+                , laydate = layui.laydate
+                , util = layui.util
+                , upload = layui.upload;
+
+            form.on('radio(uid)', function (data) {
+                // console.log(data.elem);
+                // alert(data.value);//判断单选框的选中值
+                //alert(data.othis);
+                // layer.tips('开关checked：' + (this.checked ? 'true' : 'false'), data.othis);
+                // console.log(data.value);
+
+                load_index = layer.load();
+
+                get_matsuri(data.value);
+                get_self_detail(data.value);
+                get_self_guard_detail(data.value);
+            });
+        });
+
+        // 页面切换
+        function page_change(id) {
+            var page_arr = ["detail_page", "resource_page", "about_page"];
+            for(var i = 0; i < page_arr.length; i++) {
+                document.getElementById(page_arr[i]).style.display = "none";
+            }
+            
+            document.getElementById(id).style.display = "block";
+        }
+
+        // 睡眠 毫秒
+        function sleep(delay) {
+            let start = +new Date()
+            while (+new Date() - start < delay) {}
+        }
+
+        // 下载离线数据包
+        function download_all_base_data() {
+            var a = document.createElement('a');
+            a.download = '';
+            a.href = '../data/vtb/vtb_base_data.tar.gz';
+            a.click();
+        }
+
+        // 显示数据表格 0直播数据 1用户数据
+        function show_datas(type) {
+            if(0 == type) {
+                document.getElementById("base_info").style.display = "block";
+                document.getElementById("self_info").style.display = "none";
+            } else if(1 == type) {
+                document.getElementById("base_info").style.display = "none";
+                document.getElementById("self_info").style.display = "block";
+            }
+        }
+
+        // 时间戳转 0年月日时分秒毫秒 1年月日时分秒 2年月日时分
+        function time_change(time, type) {
+            var date = new Date(time)
+            var Y = date.getFullYear() + '-'
+            var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+            var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate())
+            var h = ' ' + (date.getHours() < 10 ? '0' + date.getHours() : date.getHours())
+            var m = ':' + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
+            var s = ':' + (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds())
+            
+            if(type == 0) {
+                commonTime = date.toLocaleString();
+                return commonTime;
+            } else if(type == 1) {
+                return Y + M + D + h + m + s;
+            } else {
+                return Y + M + D + h + m;
+            }
+        }
+
+        function get_matsuri(uid) {
+            now_month_total_reward = 0;
+            last_month_total_reward = 0;
+
+            // 构建url 125.77.142.120
+            var url = "https://api.matsuri.icu/channel/" + uid + "/clips";
+            // 建立所需的对象
+            var httpRequest = new XMLHttpRequest();
+            // 打开连接  将请求参数写在url中 
+            httpRequest.open('GET', url, true);
+            // 发送请求  将请求参数写在URL中
+            httpRequest.send();
+            httpRequest.onerror = function(error) { 
+                console.log("请求get_matsuri出错！" + error); 
+                layer.msg('请求get_matsuri出错！');
+                layer.close(load_index);
+            };
+            httpRequest.ontimeout = function() { 
+                console.log("请求get_matsuri超时！"); 
+                layer.msg('请求get_matsuri超时！');
+                layer.close(load_index);
+            };
+            // 获取数据后的处理程序
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                    // 获取到json字符串
+                    var ret = httpRequest.responseText;
+                    //console.log(ret);
+                    // 转为JSON对象
+                    var json = JSON.parse(ret);
+                    console.log(json);
+
+                    if (json['status'] != 0) {
+                        console.log("api.matsuri.icu 请求异常");
+                        get_asdanmaku(uid);
+                        return;
+                    }
+
+                    if (json['data'].length == 0) {
+                        console.log("api.matsuri.icu 无数据");
+                        get_asdanmaku(uid);
+                        return;
+                    }
+
+                    user_base_data_json = json;
+                    data_src = "matsuri.icu";
+                    // generate_chart();
+
+                    generate_base_all();
+                }
+            };
+        }
+
+        function get_asdanmaku(uid) {
+            // 构建url 125.77.142.120
+            var url = "https://api.asdanmaku.com/channel/" + uid + "/clips";
+            // 建立所需的对象
+            var httpRequest = new XMLHttpRequest();
+            // 打开连接  将请求参数写在url中 
+            httpRequest.open('GET', url, true);
+            // 发送请求  将请求参数写在URL中
+            httpRequest.send();
+            httpRequest.onerror = function(error) { 
+                console.log("请求get_asdanmaku出错！" + error); 
+                layer.msg('请求get_asdanmaku出错！');
+                layer.close(load_index);
+            };
+            httpRequest.ontimeout = function() { 
+                console.log("请求get_asdanmaku超时！"); 
+                layer.msg('请求get_asdanmaku超时！');
+                layer.close(load_index);
+            };
+            // 获取数据后的处理程序
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                    // 获取到json字符串
+                    var ret = httpRequest.responseText;
+                    //console.log(ret);
+                    // 转为JSON对象
+                    var json = JSON.parse(ret);
+                    console.log(json);
+
+                    if (json['status'] != 0) {
+                        console.log("请求异常");
+                        layer.open({
+                            title: 'matsuri & asdanmaku',
+                            content: '请求异常（可能是数据源服务器出问题了，建议稍候尝试或者导入本地数据查看）'
+                        }); 
+                        return;
+                    }
+
+                    if (json['data'].length == 0) {
+                        console.log("无数据");
+                        layer.open({
+                            title: 'matsuri & asdanmaku',
+                            content: '请求无详细数据，请确认用户uid 或 平台异常'
+                        });  
+                        return;
+                    }
+
+
+                    user_base_data_json = json;
+                    data_src = "asdanmaku.com";
+
+                    generate_base_all();
+                }
+            };
+        }
+
+        // 获取当场详情页信息
+        function get_detail(page_id, index, is_end) {
+            // 构建url 125.77.142.120
+            var url = "https://api." + data_src + "/clip/" + page_id;
+            // 建立所需的对象
+            var httpRequest = new XMLHttpRequest();
+            // 打开连接  将请求参数写在url中 
+            httpRequest.open('GET', url, true);
+            // 发送请求  将请求参数写在URL中
+            httpRequest.send();
+            httpRequest.onerror = function(error) { 
+                console.log("请求get_detail出错！" + error); 
+                layer.msg('请求get_detail出错！');
+                layer.close(load_index);
+            };
+            httpRequest.ontimeout = function() { 
+                console.log("请求get_detail超时！"); 
+                layer.msg('请求get_detail超时！');
+                layer.close(load_index);
+            };
+            // 获取数据后的处理程序
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                    // 获取到json字符串
+                    var ret = httpRequest.responseText;
+                    //console.log(ret);
+                    // 转为JSON对象
+                    var json = JSON.parse(ret);
+                    // console.log(json);
+
+                    if (json['status'] != 0) {
+                        console.log("detail 请求异常");
+                        return 0;
+                    }
+
+                    if (json['data'].length == 0) {
+                        console.log("detail 无数据"); 
+                        return 0;
+                    }
+
+                    // user_detail_data_json = json;
+
+                    var danmu_density = document.getElementById("danmu_density" + index);
+                    var total_gift = document.getElementById("total_gift" + index);
+                    var total_superchat = document.getElementById("total_superchat" + index);
+                    var total_reward = document.getElementById("total_reward" + index);
+                    danmu_density.innerText = json["data"]["danmu_density"] + "个/分钟";
+                    total_gift.innerText = "￥" + json["data"]["total_gift"];
+                    total_superchat.innerText = "￥" + json["data"]["total_superchat"];
+                    total_reward.innerText = "￥" + json["data"]["total_reward"];
+
+                    var end_time = json["data"]["end_time"];
+                    var this_month = new Date(end_time).getMonth() + 1;
+
+                    if(this_month == now_month) {
+                        now_month_total_reward = now_month_total_reward + parseFloat(json["data"]["total_reward"]);
+                        // console.log(now_month_total_reward + " " + json["data"]["total_reward"] + " " +　is_end);
+                    } else if (this_month == ((now_month - 1) == 0 ? 12 : (now_month - 1))) {
+                        last_month_total_reward = last_month_total_reward + parseFloat(json["data"]["total_reward"]);
+                        // console.log(last_month_total_reward + " " + json["data"]["total_reward"] + " " +　is_end);
+                    }
+
+                    if(is_end == 1) {
+                        // console.log("月总：" + now_month_total_reward);
+                        setTimeout(function() {
+                            document.getElementById("month_total_reward0").innerText = "￥" + parseFloat(now_month_total_reward).toFixed(1) +
+                                "/" + parseFloat(last_month_total_reward).toFixed(1);
+                        }, 1000);
+                    }
+
+                    return 1;
+                }
+            };
+        }
+
+        // 获取用户详情页信息
+        function get_self_detail(uid) {
+            // 构建url
+            var url = "https://api.tokyo.vtbs.moe/v2/bulkActive/" + uid;
+            // 建立所需的对象
+            var httpRequest = new XMLHttpRequest();
+            // 打开连接  将请求参数写在url中 
+            httpRequest.open('GET', url, true);
+            // 发送请求  将请求参数写在URL中
+            httpRequest.send();
+            httpRequest.onerror = function(error) { 
+                console.log("请求get_self_detail出错！" + error); 
+                layer.msg('请求get_self_detail出错！');
+                layer.close(load_index);
+            };
+            httpRequest.ontimeout = function() { 
+                console.log("请求get_self_detail超时！"); 
+                layer.msg('请求get_self_detail超时！');
+                layer.close(load_index);
+            };
+            // 获取数据后的处理程序
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                    // 获取到json字符串
+                    var ret = httpRequest.responseText;
+                    //console.log(ret);
+                    // 转为JSON对象
+                    var json = JSON.parse(ret);
+                    console.log(json);
+
+                    if (json.length == 0) {
+                        console.log("无数据");
+                        layer.open({
+                            title: 'vtbs.moe',
+                            content: '请求无详细数据，请确认用户uid 或 平台异常'
+                        });  
+                        return;
+                    }
+                    
+                    user_self_data_json = json;
+                    generate_self_all();
+
+                    return 1;
+                }
+            };
+        }
+
+        // 获取舰团相关数据
+        function get_self_guard_detail(uid) {
+            // 构建url
+            var url = "https://api.tokyo.vtbs.moe/v1/detail/" + uid;
+            // 建立所需的对象
+            var httpRequest = new XMLHttpRequest();
+            // 打开连接  将请求参数写在url中 
+            httpRequest.open('GET', url, true);
+            // 发送请求  将请求参数写在URL中
+            httpRequest.send();
+            httpRequest.onerror = function(error) { 
+                console.log("请求get_self_guard_detail出错！" + error); 
+                layer.msg('请求get_self_guard_detail出错！');
+                layer.close(load_index);
+            };
+            httpRequest.ontimeout = function() { 
+                console.log("请求get_self_guard_detail超时！"); 
+                layer.msg('请求get_self_guard_detail超时！');
+                layer.close(load_index);
+            };
+            // 获取数据后的处理程序
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                    // 获取到json字符串
+                    var ret = httpRequest.responseText;
+                    //console.log(ret);
+                    // 转为JSON对象
+                    var json = JSON.parse(ret);
+                    console.log(json);
+
+                    if (json.length == 0) {
+                        console.log("无数据");
+                        layer.open({
+                            title: 'vtbs.moe',
+                            content: '请求无详细数据，请确认用户uid 或 平台异常'
+                        });  
+                        return;
+                    }
+
+                    document.getElementById("self_guard_tbody").innerHTML = "";
+                    var tr = document.createElement("tr");
+                    var td1 = document.createElement("td");
+                    var td2 = document.createElement("td");
+                    var td3 = document.createElement("td");
+                    var td4 = document.createElement("td");
+                    var td5 = document.createElement("td");
+                    var td6 = document.createElement("td");
+
+                    var mid = document.createElement("a");
+                    var roomid = document.createElement("a");
+                    var face = document.createElement("a");
+                    var guard0 = document.createElement("span");
+                    var guard1 = document.createElement("span");
+                    var guard2 = document.createElement("span");
+
+                    mid.href = "https://space.bilibili.com/" + json['mid'];
+                    mid.target = "_blank";
+                    mid.innerText = json['mid'];
+                    roomid.href = "https://live.bilibili.com/" + json['roomid'];
+                    roomid.target = "_blank";
+                    roomid.innerText = json['roomid'];
+                    face.href = json['face'];
+                    face.target = "_blank";
+                    face.innerText = "下载头像";
+                    face.rel = "noreferrer";
+                    guard0.innerText = json['guardType'][0];
+                    guard1.innerText = json['guardType'][1];
+                    guard2.innerText = json['guardType'][2];
+
+                    td1.appendChild(mid);
+                    td2.appendChild(roomid);
+                    td3.appendChild(face);
+                    td4.appendChild(guard0);
+                    td5.appendChild(guard1);
+                    td6.appendChild(guard2);
+
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    tr.appendChild(td4);
+                    tr.appendChild(td5);
+                    tr.appendChild(td6);
+
+                    document.getElementById("self_guard_tbody").appendChild(tr);
+
+                    return 1;
+                }
+            };
+        }
+
+        // 生成所有基础页数据
+        function generate_base_all() {
+            layer.close(load_index);
+
+            generate_chart();
+
+            document.getElementById("base_info_tbody").innerHTML = "";
+
+            var json_len = user_base_data_json['data'].length;
+            console.log("json_len=" +　json_len);
+
+            var end_get_detail_flag = 1;
+
+            for (var i = 0; i < json_len; i++) {
+                var tr = document.createElement("tr");
+                var td1 = document.createElement("td");
+                var td2 = document.createElement("td");
+                var td3 = document.createElement("td");
+                var td4 = document.createElement("td");
+                var td5 = document.createElement("td");
+                var td6 = document.createElement("td");
+                var td7 = document.createElement("td");
+                var td8 = document.createElement("td");
+                var td9 = document.createElement("td");
+                var td10 = document.createElement("td");
+                var td11 = document.createElement("td");
+
+                var cover = document.createElement("a");
+                var title = document.createElement("a");
+                var start_time = document.createElement("span");
+                var end_time = document.createElement("span");
+                var total_danmu = document.createElement("span");
+                var views = document.createElement("span");
+
+                var danmu_density = document.createElement("span");
+                var total_gift = document.createElement("span");
+                var total_superchat = document.createElement("span");
+                var total_reward = document.createElement("span");
+                var month_total_reward = document.createElement("span");
+
+                cover.href = user_base_data_json['data'][i]['cover'];
+                cover.target = "_blank";
+                cover.innerText = "下载封面";
+                cover.rel = "noreferrer";
+                title.href = "https://" + data_src + "/detail/" + user_base_data_json['data'][i]['id'];
+                title.target = "_blank";
+                title.innerText = user_base_data_json['data'][i]['title'];
+                start_time.innerText = time_change(user_base_data_json['data'][i]['start_time'], 2);
+                end_time.innerText = time_change(user_base_data_json['data'][i]['end_time'], 2);
+                total_danmu.innerText = user_base_data_json['data'][i]['total_danmu'];
+                views.innerText = user_base_data_json['data'][i]['views'];
+
+
+                danmu_density.id = "danmu_density" + i;
+                total_gift.id = "total_gift" + i;
+                total_superchat.id = "total_superchat" + i;
+                total_reward.id = "total_reward" + i;
+                month_total_reward.id = "month_total_reward" + i;
+
+                var this_month = new Date(user_base_data_json['data'][i]['end_time']).getMonth() + 1;
+
+                // 获取近2个月数据
+                if((this_month != now_month && this_month != ((now_month - 1) == 0 ? 12 : (now_month - 1))) || i == (json_len - 1)) {
+                    if(end_get_detail_flag == 1) {
+                        get_detail(user_base_data_json['data'][i]['id'], i, end_get_detail_flag);
+                        end_get_detail_flag = 0;
+                    }
+                } else {
+                    get_detail(user_base_data_json['data'][i]['id'], i, 0);
+                }
+
+                td1.appendChild(cover);
+                td2.appendChild(title);
+                td3.appendChild(start_time);
+                td4.appendChild(end_time);
+                td5.appendChild(total_danmu);
+                td6.appendChild(views);
+                td7.appendChild(danmu_density);
+                td8.appendChild(total_gift);
+                td9.appendChild(total_superchat);
+                td10.appendChild(total_reward);
+                td11.appendChild(month_total_reward);
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+                tr.appendChild(td5);
+                tr.appendChild(td6);
+                tr.appendChild(td7);
+                tr.appendChild(td8);
+                tr.appendChild(td9);
+                tr.appendChild(td10);
+                tr.appendChild(td11);
+
+                document.getElementById("base_info_tbody").appendChild(tr);
+
+                sleep(100);
+            }
+        }
+
+        // 直播弹幕互动图
+        function generate_chart() {
+            var dom = document.getElementById('chart-container');
+
+            var myChart = echarts.init(dom, null, {
+                renderer: 'canvas',
+                useDirtyRect: false
+            });
+            var app = {};
+            var option;
+
+            var option_xAxis_data = [];
+            var option_series_data1 = [];
+            var option_series_data2 = [];
+
+            for (var i = (user_base_data_json['data'].length - 1); i >= 0; i--) {
+                option_xAxis_data.push(time_change(user_base_data_json['data'][i]['start_time'], 2));
+                option_series_data1.push(user_base_data_json['data'][i]['total_danmu']);
+                option_series_data2.push(user_base_data_json['data'][i]['views']);
+            }
+
+            myChart.showLoading();
+            myChart.hideLoading();
+            option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow',
+                        label: {
+                            show: true
+                        }
+                    }
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: {show: true},
+                        dataView: {show: true, readOnly: false},
+                        magicType: {show: true, type: ['line', 'bar']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    },
+                    right: '10%'
+                },
+                calculable: true,
+                legend: {
+                    data: ['弹幕', '互动人数'],
+                    itemGap: 5
+                },
+                grid: {
+                    top: '12%',
+                    left: '1%',
+                    right: '10%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: option_xAxis_data
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: '个数',
+                        axisLabel: {
+                            formatter: function (a) {
+                                a = +a;
+                                return isFinite(a) ? echarts.format.addCommas(+a) : '';
+                            }
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        show: true,
+                        start: 94,
+                        end: 100
+                    },
+                    {
+                        type: 'inside',
+                        start: 94,
+                        end: 100
+                    },
+                    {
+                        show: false,
+                        yAxisIndex: 0,
+                        filterMode: 'empty',
+                        width: 30,
+                        height: '80%',
+                        showDataShadow: false,
+                        left: '93%'
+                    }
+                ],
+                series: [
+                    {
+                        name: '弹幕',
+                        type: 'bar',
+                        data: option_series_data1
+                    },
+                    {
+                        name: '互动人数',
+                        type: 'bar',
+                        data: option_series_data2
+                    }
+                ]
+            };
+            myChart.setOption(option);
+
+            if (option && typeof option === 'object') {
+                myChart.setOption(option);
+            }
+
+            window.addEventListener('resize', myChart.resize);
+        };
+
+        // 粉丝变化图
+        function generate_chart2() {
+            var dom = document.getElementById('chart-container2');
+
+            var json1 = user_self_data_json;
+            var len1 = json1.length;
+            var json2 = [];
+            var temp_json = {"follower" : "", "time" : ""};
+
+            for (var i = (len1 - 1); i >= 0; i--) {
+                temp_json = {"follower" : "", "time" : ""};
+                var this_day = new Date(json1[i]['time']).getDate();
+                var next_day;
+                if((i - 1) >= 0) {
+                    next_day = new Date(json1[i - 1]['time']).getDate();
+                }
+                if(this_day == next_day) continue;
+
+                temp_json.follower = json1[i]["follower"];
+                temp_json.time = time_change(json1[i]['time'], 2);
+
+                json2.push(temp_json);
+            }
+
+            console.log(json2);
+
+            var myChart = echarts.init(dom, null, {
+                renderer: 'canvas',
+                useDirtyRect: false
+            });
+            var app = {};
+            var option;
+
+            var option_xAxis_data = [];
+            var option_series_data1 = [];
+
+            for (var i = (json2.length - 1); i >= 0; i--) {
+                option_xAxis_data.push(json2[i]['time']);
+                option_series_data1.push(json2[i]['follower']);
+            }
+
+            myChart.showLoading();
+            myChart.hideLoading();
+            option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow',
+                        label: {
+                            show: true
+                        }
+                    }
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: {show: true},
+                        dataView: {show: true, readOnly: false},
+                        magicType: {show: true, type: ['line', 'bar']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    },
+                    right: '10%'
+                },
+                calculable: true,
+                legend: {
+                    data: ['关注数'],
+                    itemGap: 5
+                },
+                grid: {
+                    top: '12%',
+                    left: '1%',
+                    right: '10%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: option_xAxis_data
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: '个数',
+                        axisLabel: {
+                            formatter: function (a) {
+                                a = +a;
+                                return isFinite(a) ? echarts.format.addCommas(+a) : '';
+                            }
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        show: true,
+                        start: 71,
+                        end: 100
+                    },
+                    {
+                        type: 'inside',
+                        start: 71,
+                        end: 100
+                    },
+                    {
+                        show: false,
+                        yAxisIndex: 0,
+                        filterMode: 'empty',
+                        width: 30,
+                        height: '80%',
+                        showDataShadow: false,
+                        left: '93%'
+                    }
+                ],
+                series: [
+                    {
+                        name: '关注数',
+                        type: 'line',
+                        data: option_series_data1
+                    }
+                ]
+            };
+            myChart.setOption(option);
+
+            if (option && typeof option === 'object') {
+                myChart.setOption(option);
+            }
+
+            window.addEventListener('resize', myChart.resize);
+        };
+
+        // 生成所有个人页数据
+        function generate_self_all() {
+            generate_chart2();
+            
+            document.getElementById("self_info_tbody").innerHTML = "";
+
+            var json = user_self_data_json;
+            var len = json.length;
+            var last_follower = 0;
+
+            // console.log(json);
+
+            for (var i = (len - 1); i >= 0; i--) {
+                var tr = document.createElement("tr");
+                var td1 = document.createElement("td");
+                var td2 = document.createElement("td");
+                var td3 = document.createElement("td");
+
+                var follower = document.createElement("span");
+                var change = document.createElement("span");
+                var time = document.createElement("span");
+
+                var this_day = new Date(json[i]['time']).getDate();
+                var next_day;
+                if((i - 1) >= 0) {
+                    next_day = new Date(json[i - 1]['time']).getDate();
+                }
+                // console.log("json[i]['time']:" + json[i]['time'] + " json[i-1]['time']" + json[i-1]['time']);
+                // console.log("this_day:" + this_day + " next_day:" + next_day);
+                if(this_day == next_day) continue;
+
+                follower.innerText = json[i]["follower"];
+                change.className = "change";
+                if(i != (len - 1)) {
+                    var change_num = parseInt(last_follower) - parseInt(json[i]["follower"]);
+                    change.innerText = change_num;
+                } else {
+                    change.innerText = "0";
+                }
+                last_follower = parseInt(json[i]["follower"]);
+                time.innerText = time_change(json[i]['time'], 0);
+
+                td1.appendChild(follower);
+                td2.appendChild(change);
+                td3.appendChild(time);
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+
+                document.getElementById("self_info_tbody").appendChild(tr);
+            }
+
+            // 粉丝变化数据偏移
+            var change_dom = document.getElementsByClassName("change");
+            for(var i = 0; i < change_dom.length; i++) {
+                if(i == (change_dom.length - 1)) {
+                    change_dom[i].innerText = "0";
+                } else {
+                    change_dom[i].innerText = change_dom[i+1].innerText;
+                    if(parseInt(change_dom[i+1].innerText) > 0) change_dom[i].style.color = "#00da3c";
+                    else change_dom[i].style.color = "#ec0000";
+                }
+            }
+        }
+
+        // 搜索按钮
+        function search() {
+            var input_uid = document.getElementById("input_uid").value;
+
+            load_index = layer.open();
+
+            get_matsuri(input_uid);
+            get_self_detail(input_uid);
+            get_self_guard_detail(input_uid);
+        }
+
+        // echarts 折线图
+        function generate_chart_old() {
+            var dom = document.getElementById('chart-container');
+            var myChart = echarts.init(dom, null, {
+                renderer: 'canvas',
+                useDirtyRect: false
+            });
+            var app = {};
+
+            var option;
+
+            var option_xAxis_data = [];
+            var option_series_data1 = [];
+            var option_series_data2 = [];
+            for (var i = 0; i < user_base_data_json['data'].length; i++) {
+                option_xAxis_data.push(time_change(user_base_data_json['data'][i]['start_time']), 1);
+                option_series_data1.push(user_base_data_json['data'][i]['total_danmu']);
+                option_series_data2.push(user_base_data_json['data'][i]['views']);
+            }
+
+            option = {
+                xAxis: {
+                    type: 'category',
+                    data: option_xAxis_data
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        data: option_series_data1,
+                        type: 'line'
+                    },
+                    {
+                        data: option_series_data2,
+                        type: 'line'
+                    }
+                ]
+            };
+
+            if (option && typeof option === 'object') {
+                myChart.setOption(option);
+            }
+
+            window.addEventListener('resize', myChart.resize);
+        }
+
+        function upload_file(source) {
+			var input = source;
+			var reader = new FileReader();
+			reader.readAsText(input.files[0]);
+			reader.onload = function() {
+				if(reader.result) {
+			        // 显示文件内容
+					temp_str = reader.result;
+                    // console.log(temp_str);
+                    var json = JSON.parse(temp_str);
+                    console.log(json);
+                    user_base_data_json = json;
+                    generate_base_all();
+				}
+			};
+		}
+
+        // get_matsuri(2094031249);
+    </script>
+</body>
+
+</html>

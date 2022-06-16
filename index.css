@@ -1,0 +1,6 @@
+#chart-container {
+    position: relative;
+    height: 50vh;
+    overflow: hidden;
+}
+
