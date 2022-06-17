@@ -10,6 +10,15 @@
     <link rel="apple-touch-icon" sizes="180x180" href="img/logo.png">
     <link rel="stylesheet" href="layui/css/layui.css">
     <style>
+        #iframe_page {
+            width: 99%;
+        }
+
+        #iframe1 {
+            width: 100%;
+            height: 100%;
+        }
+
         #detail_page a {
             text-decoration: underline;
         }
@@ -72,6 +81,10 @@
         <ul class="layui-nav" lay-filter="">
             <li class="layui-nav-item layui-this"><a href="#" onclick="page_change('detail_page')">首页</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('resource_page')">资源导航</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'vup.darkflame.ga')">vup月榜</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'matsuri.icu')">matsuri.icu</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'vtbs.moe')">vtbs.moe</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'huolonglive.com')">火龙榜</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('about_page')">关于</a></li>
         </ul>
     </div>
@@ -269,6 +282,9 @@
             </div>
         </div>
     </div>
+    <div id="iframe_page">
+        <iframe id="iframe1"></iframe>
+    </div>
     <div id="about_page">
         <div class="layui-container">
         听我说谢谢你
@@ -299,6 +315,10 @@
         // 获取当月月份
         now_month = new Date(Date.now()).getMonth() + 1;
 
+        window.onload = function() {
+            document.getElementById("iframe1").style.height = (window.innerHeight * 0.8) + "px";
+        };
+
         layui.use(function () {
             var layer = layui.layer
                 , form = layui.form
@@ -324,13 +344,20 @@
         });
 
         // 页面切换
-        function page_change(id) {
-            var page_arr = ["detail_page", "resource_page", "about_page"];
+        function page_change(id, site) {
+            var page_arr = ["detail_page", "resource_page", "about_page", "iframe_page"];
             for(var i = 0; i < page_arr.length; i++) {
                 document.getElementById(page_arr[i]).style.display = "none";
             }
             
             document.getElementById(id).style.display = "block";
+            if(id == "iframe_page") {
+                var iframe1 = document.getElementById("iframe1");
+                if(site == "vtbs.moe") iframe1.src = "https://vtbs.moe";
+                else if(site == "vup.darkflame.ga") iframe1.src = "https://vup.darkflame.ga/ranking/month?sortby=income";
+                else if(site == "matsuri.icu") iframe1.src = "https://matsuri.icu";
+                else if(site == "huolonglive.com") iframe1.src = "https://huolonglive.com/#/";
+            }
         }
 
         // 睡眠 毫秒
