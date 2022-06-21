@@ -1183,14 +1183,23 @@
                 temp_json = {"count" : 0, "time" : ""};
                 var this_time = time_change(json1["data"][i]["time"], 3);
                 // console.log("last_time:" + last_time + " this_time:" + this_time);
-
+                var text = "";
+                // 只统计弹幕（过滤其他如：礼物数据）
+                if(json1["data"][i].hasOwnProperty("text")) text = json1["data"][i]["text"];
+                else text = "【";
                 if(i == (len1 - 1)) {
                     last_time = this_time;
-                    count++;
+                    // 只计算非同传弹幕
+                    if(text.substring(0, 1) != "【") {
+                        count++;
+                    }
                     continue;
                 } else if(i == 0) {
                     if(this_time == last_time) {
-                        temp_json.count = (count + 1);
+                        if(text.substring(0, 1) != "【") {
+                            count++;
+                        }
+                        temp_json.count = count;
                         temp_json.time = last_time;
                         json2.push(temp_json);
                     } else {
@@ -1200,13 +1209,19 @@
                         json2.push(temp_json);
 
                         // 最后一个时间点录入
-                        temp_json.count = 1;
+                        if(text.substring(0, 1) != "【") {
+                            temp_json.count = 1;
+                        } else {
+                            temp_json.count = 0;
+                        }
                         temp_json.time = this_time;
                         json2.push(temp_json);
                     }
                 } else {
                     if(this_time == last_time) {
-                        count++;
+                        if(text.substring(0, 1) != "【") {
+                            count++;
+                        }
                         continue;
                     } else {
                         // 前一分钟时间点录入
@@ -1215,7 +1230,11 @@
                         json2.push(temp_json);
 
                         // 记录新节点
-                        count = 1;
+                        if(text.substring(0, 1) != "【") {
+                            count = 1;
+                        } else {
+                            count = 0;
+                        }
                         last_time = this_time;
                     }
                 }
