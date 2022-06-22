@@ -29,7 +29,7 @@
             line-height: 40px;
         }
 
-        #resource_page, #about_page {
+        #resource_page, #about_page, #component_page {
             display: none;
         }
         
@@ -91,6 +91,7 @@
         <ul class="layui-nav" lay-filter="">
             <li class="layui-nav-item layui-this"><a href="#" onclick="page_change('detail_page')">首页</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('resource_page')">资源导航</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('component_page')">查成分</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'vup.darkflame.ga')">vup月榜</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'matsuri.icu')">matsuri.icu</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'vtbs.moe')">vtbs.moe</a></li>
@@ -297,6 +298,17 @@
             </div>
         </div>
     </div>
+    <div id="component_page">
+        <div style="text-align: center; margin: 10px;">
+            <div class="layui-input-inline">
+                <label class="layui-form-label">用户UID</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="input_uid_component" lay-verify="required" placeholder="请输入用户UID，例：123" class="layui-input" autocomplete="off">
+                </div>
+                <button type="button" class="layui-btn layui-btn-normal" onclick="get_user_attentions()">搜索</button>
+            </div>
+        </div>
+    </div>
     <div id="iframe_page">
         <iframe id="iframe1"></iframe>
     </div>
@@ -377,7 +389,7 @@
 
         // 页面切换
         function page_change(id, site) {
-            var page_arr = ["detail_page", "resource_page", "about_page", "iframe_page"];
+            var page_arr = ["detail_page", "resource_page", "about_page", "iframe_page", "component_page"];
             for(var i = 0; i < page_arr.length; i++) {
                 document.getElementById(page_arr[i]).style.display = "none";
             }
@@ -668,6 +680,13 @@
                     return 1;
                 }
             };
+        }
+
+        // 获取用户关注数据
+        function get_user_attentions() {
+            var uid = document.getElementById("input_uid_component").value;
+            // https://account.bilibili.com/api/member/getCardByMid?mid=
+            window.open("https://account.bilibili.com/api/member/getCardByMid?mid=" + uid, '_blank');
         }
 
         // 获取用户详情页信息
