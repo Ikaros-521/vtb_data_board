@@ -23,6 +23,15 @@
             text-decoration: underline;
         }
 
+        #api_page {
+            display: none;
+        }
+
+        .layui-card-body a {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
         #resource_page a{
             text-decoration: underline;
             font-size: 18px;
@@ -97,6 +106,7 @@
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'vtbs.moe')">vtbs.moe</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'biligank.com')">biligank.com</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'huolonglive.com')">火龙榜</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('api_page')">API</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('about_page')">关于</a></li>
         </ul>
     </div>
@@ -312,9 +322,43 @@
     <div id="iframe_page">
         <iframe id="iframe1"></iframe>
     </div>
+    <div id="api_page">
+        <div class="layui-bg-gray" style="padding: 20px;">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">获取用户舰团数</div>
+                            <div class="layui-card-body">
+                                <p>请求网址：https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList</p>
+                                <p>请求方法：get</p>
+                                <p>传参：{"roomid":用户房间号,"page":页数,"ruid":用户UID,"page_size":页人数（一页几个用户信息）}</p>
+                                <a onclick="jump_to_url('https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=22748536&page=1&ruid=2094031249&page_size=0')">例如：https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=22748536&page=1&ruid=2094031249&page_size=0</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-bg-gray" style="padding: 20px;">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">获取用户关注信息</div>
+                            <div class="layui-card-body">
+                                <p>请求网址：https://account.bilibili.com/api/member/getCardByMid</p>
+                                <p>请求方法：get</p>
+                                <p>传参：{"mid":用户UID}</p>
+                                <a onclick="jump_to_url('https://account.bilibili.com/api/member/getCardByMid?mid=2094031249')">例如：https://account.bilibili.com/api/member/getCardByMid?mid=2094031249</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="about_page">
         <div class="layui-container">
-        听我说谢谢你
+            听我说谢谢你
         </div>
     </div>
 
@@ -389,7 +433,7 @@
 
         // 页面切换
         function page_change(id, site) {
-            var page_arr = ["detail_page", "resource_page", "about_page", "iframe_page", "component_page"];
+            var page_arr = ["detail_page", "resource_page", "about_page", "iframe_page", "component_page", "api_page"];
             for(var i = 0; i < page_arr.length; i++) {
                 document.getElementById(page_arr[i]).style.display = "none";
             }
@@ -680,6 +724,11 @@
                     return 1;
                 }
             };
+        }
+
+        // 跳转至新页面
+        function jump_to_url(url) {
+            window.open(url, '_blank');
         }
 
         // 获取用户关注数据
