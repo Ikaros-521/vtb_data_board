@@ -280,6 +280,8 @@
                     <br>
                     <a href="data/web-Danmu-v2.1.js" target="_blank">PC浏览器自动补括号+一键常用语 辅助JS程序</a>
                     <a href="data/web-Danmu-v2.0.gif" target="_blank">使用演示</a>
+                    <br>
+                    <a href="https://danmu.sea-group.org/index" target="_blank">同传姬：浏览器在线b站同传</a>
                 </div>
             </div>
             <div class="layui-card">
@@ -328,12 +330,11 @@
                 <div class="layui-col-md6">
                     <div class="layui-card">
                         <div class="layui-card-header">获取用户舰团数</div>
-                            <div class="layui-card-body">
-                                <p>请求网址：https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList</p>
-                                <p>请求方法：get</p>
-                                <p>传参：{"roomid":用户房间号,"page":页数,"ruid":用户UID,"page_size":页人数（一页几个用户信息）}</p>
-                                <a onclick="jump_to_url('https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=22748536&page=1&ruid=2094031249&page_size=0')">例如：https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=22748536&page=1&ruid=2094031249&page_size=0</a>
-                            </div>
+                        <div class="layui-card-body">
+                            <p>请求网址：https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList</p>
+                            <p>请求方法：get</p>
+                            <p>传参：{"roomid":用户房间号,"page":页数,"ruid":用户UID,"page_size":页人数（一页几个用户信息）}</p>
+                            <a onclick="jump_to_url('https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=22748536&page=1&ruid=2094031249&page_size=0')">例如：https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=22748536&page=1&ruid=2094031249&page_size=0</a>
                         </div>
                     </div>
                 </div>
@@ -344,12 +345,11 @@
                 <div class="layui-col-md6">
                     <div class="layui-card">
                         <div class="layui-card-header">获取用户关注信息</div>
-                            <div class="layui-card-body">
-                                <p>请求网址：https://account.bilibili.com/api/member/getCardByMid</p>
-                                <p>请求方法：get</p>
-                                <p>传参：{"mid":用户UID}</p>
-                                <a onclick="jump_to_url('https://account.bilibili.com/api/member/getCardByMid?mid=2094031249')">例如：https://account.bilibili.com/api/member/getCardByMid?mid=2094031249</a>
-                            </div>
+                        <div class="layui-card-body">
+                            <p>请求网址：https://account.bilibili.com/api/member/getCardByMid</p>
+                            <p>请求方法：get</p>
+                            <p>传参：{"mid":用户UID}</p>
+                            <a onclick="jump_to_url('https://account.bilibili.com/api/member/getCardByMid?mid=2094031249')">例如：https://account.bilibili.com/api/member/getCardByMid?mid=2094031249</a>
                         </div>
                     </div>
                 </div>
@@ -410,7 +410,7 @@
 
                 load_index = layer.load();
 
-                show_hide_div('chart_main3');
+                show_hide_div('chart_main3', 'none');
                 get_matsuri(data.value);
                 get_self_detail(data.value);
                 get_self_guard_detail(data.value);
@@ -738,6 +738,78 @@
             window.open("https://account.bilibili.com/api/member/getCardByMid?mid=" + uid, '_blank');
         }
 
+        // 获取test
+        function get_test() {
+            var uid = document.getElementById("input_uid_component").value;
+            // 构建url
+            var url = "https://account.bilibili.com/api/member/getCardByMid?mid=" + uid;
+            // 建立所需的对象
+            var httpRequest = new XMLHttpRequest();
+            // 打开连接  将请求参数写在url中 
+            httpRequest.open('GET', url, true);
+            httpRequest.setRequestHeader('Access-Control-Allow-Origin', '*');
+            httpRequest.setRequestHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+            // 设置运行跨域操作  
+            httpRequest.withCredentials = true; 
+            // 发送请求  将请求参数写在URL中
+            httpRequest.send();
+            httpRequest.onerror = function(error) { 
+                console.log("请求get_self_detail出错！" + error); 
+                layer.msg('请求get_self_detail出错！');
+                layer.close(load_index);
+            };
+            httpRequest.ontimeout = function() { 
+                console.log("请求get_self_detail超时！"); 
+                layer.msg('请求get_self_detail超时！');
+                layer.close(load_index);
+            };
+            // 获取数据后的处理程序
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                    // 获取到json字符串
+                    var ret = httpRequest.responseText;
+                    //console.log(ret);
+                    // 转为JSON对象
+                    var json = JSON.parse(ret);
+                    console.log(json);
+                }
+            };
+        }
+
+        function get_test2() {
+            const iframe    = document.getElementById('iframe1');
+            iframe.src = "https://www.bilibili.com";
+            const iframeWin = iframe.contentWindow || iframe;
+            const iframeDoc = iframe.contentDocument || iframeWin.document;
+            
+            let script = iframeDoc.createElement('SCRIPT');
+            
+            script.append(`function sendWithoutOrigin(url) {
+                let request = new XMLHttpRequest();
+            
+                request.open('GET', url);
+            
+                request.onreadystatechange = function() {
+                    if(request.readyState === XMLHttpRequest.DONE) {
+                        if(request.status === 200) {
+                            console.log('GET succeeded.');
+                        }
+                        else {
+                            console.warn('GET failed.');
+                        }
+                    }
+                }
+                request.send();
+            }`);
+            
+            iframeDoc.documentElement.appendChild(script);
+
+            var uid = document.getElementById("input_uid_component").value;
+            // 构建url
+            var url = "https://account.bilibili.com/api/member/getCardByMid?mid=" + uid;
+            iframeWin.sendWithoutOrigin(url);
+        }
+        
         // 获取用户详情页信息
         function get_self_detail(uid) {
             // 构建url
@@ -947,13 +1019,14 @@
                 var this_month = new Date(user_base_data_json['data'][i]['end_time']).getMonth() + 1;
 
                 // 获取近2个月数据
+                var page_id = user_base_data_json["data"][i]["id"];
                 if((this_month != now_month && this_month != ((now_month - 1) == 0 ? 12 : (now_month - 1))) || i == (json_len - 1)) {
                     if(end_get_detail_flag == 1) {
-                        get_detail(user_base_data_json['data'][i]['id'], i, end_get_detail_flag);
+                        get_detail(page_id, i, end_get_detail_flag);
                         end_get_detail_flag = 0;
                     }
                 } else {
-                    get_detail(user_base_data_json['data'][i]['id'], i, 0);
+                    get_detail(page_id, i, 0);
                 }
 
                 td1.appendChild(cover);
