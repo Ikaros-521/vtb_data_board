@@ -107,6 +107,7 @@
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'biligank.com')">biligank.com</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'huolonglive.com')">火龙榜</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('api_page')">API</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="jump_to_url('https://link.bilibili.com/p/center/index#/user-center/follow/1')">直播情况查询</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('about_page')">关于</a></li>
         </ul>
     </div>
@@ -530,13 +531,21 @@
 
                     if (json['status'] != 0) {
                         console.log("api.matsuri.icu 请求异常");
-                        get_asdanmaku(uid);
+                        //get_asdanmaku(uid);
+                        layer.open({
+                            title: 'matsuri',
+                            content: '请求异常（可能是数据源服务器出问题了，建议稍候尝试或者导入本地数据查看）'
+                        }); 
                         return;
                     }
 
                     if (json['data'].length == 0) {
                         console.log("api.matsuri.icu 无数据");
-                        get_asdanmaku(uid);
+                        //get_asdanmaku(uid);
+                        layer.open({
+                            title: 'matsuri',
+                            content: '请求无详细数据，请确认用户uid 或 平台异常'
+                        });  
                         return;
                     }
 
@@ -778,7 +787,7 @@
 
         function get_test2() {
             const iframe    = document.getElementById('iframe1');
-            iframe.src = "https://www.bilibili.com";
+            iframe.src = "https://api.live.bilibili.com/xlive/web-ucenter/user/following?page=1&page_size=20";
             const iframeWin = iframe.contentWindow || iframe;
             const iframeDoc = iframe.contentDocument || iframeWin.document;
             
@@ -800,14 +809,22 @@
                     }
                 }
                 request.send();
-            }`);
+            }
+            
+            function get_json() {
+                var json_str = document.getElementsByTagName("pre")[0].innerText;
+                var json = JSON.parse(json_str);
+                console.log(json);
+            }
+            `);
             
             iframeDoc.documentElement.appendChild(script);
 
             var uid = document.getElementById("input_uid_component").value;
             // 构建url
-            var url = "https://account.bilibili.com/api/member/getCardByMid?mid=" + uid;
-            iframeWin.sendWithoutOrigin(url);
+            // var url = "https://account.bilibili.com/api/member/getCardByMid?mid=" + uid;
+            // iframeWin.sendWithoutOrigin(url);
+            iframeWin.get_json();
         }
         
         // 获取用户详情页信息
@@ -1630,6 +1647,7 @@
 				}
 			};
 		}
+
     </script>
 </body>
 
