@@ -785,6 +785,9 @@
 
         // 获取用户舰团信息
         function get_user_guard() {
+            // 清空数据
+            document.getElementById("guard_info_tbody").innerHTML = "";
+
             var uid = document.getElementById("input_uid_guard").value;
             // https://api.tokyo.vtbs.moe/v1/guard/2051555906
             var url = "https://api.tokyo.vtbs.moe/v1/guard/" + uid;
