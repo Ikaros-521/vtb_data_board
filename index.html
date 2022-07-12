@@ -804,10 +804,14 @@
             };
             // 获取数据后的处理程序
             httpRequest.onreadystatechange = function () {
+                if (httpRequest.status == 404) {
+                    layer.msg('此用户数据没有找到，请修改uid');
+                    return 0;
+                }
                 if (httpRequest.readyState == 4 && httpRequest.status == 200) {
                     // 获取到json字符串
                     var ret = httpRequest.responseText;
-                    //console.log(ret);
+                    // console.log(ret);
 
                     if(ret == "Not Found") {
                         layer.msg('此用户数据没有找到，请修改uid');
