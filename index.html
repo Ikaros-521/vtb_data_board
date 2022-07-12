@@ -785,6 +785,7 @@
 
         // 获取用户舰团信息
         function get_user_guard() {
+            load_index = layer.load();
             // 清空数据
             document.getElementById("guard_info_tbody").innerHTML = "";
 
@@ -800,14 +801,17 @@
             httpRequest.onerror = function(error) { 
                 console.log("请求get_user_guard出错！" + error); 
                 layer.msg('请求get_user_guard出错！');
+                layer.close(load_index);
             };
             httpRequest.ontimeout = function() { 
                 console.log("请求get_user_guard超时！"); 
                 layer.msg('请求get_user_guard超时！');
+                layer.close(load_index);
             };
             // 获取数据后的处理程序
             httpRequest.onreadystatechange = function () {
                 if (httpRequest.status == 404) {
+                    layer.close(load_index);
                     layer.msg('此用户数据没有找到，请修改uid');
                     return 0;
                 }
@@ -866,6 +870,7 @@
 
                         document.getElementById("guard_info_tbody").appendChild(tr);
                     }
+                    layer.close(load_index);
 
                     return 1;
                 }
