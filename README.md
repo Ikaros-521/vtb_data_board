@@ -1,6 +1,6 @@
 # 前言
 
-基于LayUI开发，，旨在整理数据快捷总览。数据源自matsuri.icu、vtbs.moe、asdanmaku.com、biligank.com。  
+基于LayUI开发，旨在整理数据快捷总览。数据源自matsuri.icu、vtbs.moe、asdanmaku.com、biligank.com。  
 
 # 更新日志
 
