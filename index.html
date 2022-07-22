@@ -103,6 +103,7 @@
             <li class="layui-nav-item"><a href="#" onclick="page_change('resource_page')">资源导航</a></li>
             <!--<li class="layui-nav-item"><a href="#" onclick="page_change('component_page')">查成分</a></li>-->
             <li class="layui-nav-item"><a href="#" onclick="page_change('guard_page')">舰团信息查询</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'danmaku.suki.club')">danmaku（查成分）</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'vup.darkflame.ga')">vup月榜</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'matsuri.icu')">matsuri.icu</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'vtbs.moe')">vtbs.moe</a></li>
@@ -250,7 +251,9 @@
                     <br>
                     <a href="https://matsuri.icu/" target="_blank">matsuri.icu：主播弹幕、收益等相关信息查询</a>
                     <br>
-                    <a href="https://asdanmaku.com/" target="_blank">asdanmaku.com：主播弹幕、收益等相关信息查询2（要寄了）</a>
+                    <a href="https://asdanmaku.com/" target="_blank">asdanmaku.com：主播弹幕、收益等相关信息查询2（g了）</a>
+                    <br>
+                    <a href="https://danmaku.suki.club" target="_blank">danmaku.suki.club：主播弹幕收益等相关信息、用户弹幕筛查等</a>
                     <br>
                     <a href="http://biligank.com/" target="_blank">biligank.com：主播弹幕、收益等相关信息查询3（刚开）</a>
                     <br>
@@ -322,6 +325,18 @@
                 </div>
                 <button type="button" class="layui-btn layui-btn-normal" onclick="get_user_attentions()">搜索</button>
             </div>
+        </div>
+    </div>
+    <div id="entry_vtb_page">
+        <div style="text-align: center; margin: 10px;">
+            <div class="layui-input-inline">
+                <label class="layui-form-label">用户UID</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="input_uid_entry_vtb" lay-verify="required" placeholder="请输入用户UID，例：123" class="layui-input" autocomplete="off">
+                </div>
+                <button type="button" class="layui-btn layui-btn-normal" onclick="get_user_entry_vtb()">搜索</button>
+            </div>
+            <div id="entry_vtb_data_div"></div>
         </div>
     </div>
     <div id="guard_page">
@@ -470,7 +485,8 @@
 
         // 页面切换
         function page_change(id, site) {
-            var page_arr = ["detail_page", "resource_page", "about_page", "iframe_page", "component_page", "api_page", "guard_page"];
+            var page_arr = ["detail_page", "resource_page", "about_page", "iframe_page", "component_page", "api_page", 
+                "guard_page"];
             for(var i = 0; i < page_arr.length; i++) {
                 document.getElementById(page_arr[i]).style.display = "none";
             }
@@ -483,6 +499,7 @@
                 else if(site == "matsuri.icu") iframe1.src = "https://matsuri.icu";
                 else if(site == "huolonglive.com") iframe1.src = "https://huolonglive.com/#/";
                 else if(site == "biligank.com") iframe1.src = "https://biligank.com/";
+                else if(site == "danmaku.suki.club") iframe1.src = "https://danmaku.suki.club";
             }
         }
 
