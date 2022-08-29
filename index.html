@@ -10,89 +10,7 @@
     <link rel="icon" type="image/png" href="img/logo.png" sizes="192x192">
     <link rel="apple-touch-icon" sizes="180x180" href="img/logo.png">
     <link rel="stylesheet" href="layui/css/layui.css">
-    <style>
-        #iframe_page {
-            width: 99%;
-        }
-
-        #iframe1 {
-            width: 100%;
-            height: 100%;
-        }
-
-        #detail_page a {
-            text-decoration: underline;
-        }
-
-        #api_page {
-            display: none;
-        }
-
-        .layui-card-body a {
-            cursor: pointer;
-            text-decoration: underline;
-        }
-
-        #resource_page a{
-            text-decoration: underline;
-            font-size: 18px;
-            line-height: 40px;
-        }
-
-        #resource_page, #about_page, #component_page {
-            display: none;
-        }
-        
-        #chart-container {
-            position: relative;
-            height: 50vh;
-            overflow: hidden;
-        }
-
-        #chart-container2 {
-            position: relative;
-            height: 50vh;
-            overflow: hidden;
-        }
-
-        #chart-container3 {
-            position: relative;
-            height: 50vh;
-            overflow: hidden;
-        }
-
-        #chart_main3 {
-            display: none;
-        }
-
-        .layui-form-label {
-            width: auto;
-        }
-
-        .fileDiv {
-            width: 140px;
-            height: 40px;
-            background-color: #1e9fff;
-            line-height: 40px;
-            text-align: center;
-            color: #FFF;
-            border-radius: 3px;
-            /*border: 1px solid #999;*/
-            position: relative;
-            overflow: hidden;
-        }
-
-        .fileDiv input {
-            width: 100px;
-            height: 40px;
-            background-color: #FFF;
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            -ms-filter: 'alpha(opacity=0)';
-        }
-    </style>
+    <link rel="stylesheet" href="index.css">
     <script src="js/echarts.js"></script>
 </head>
 
@@ -118,7 +36,7 @@
         <div id="vtb_screen" style="text-align: center;">
             <div class="layui-form ba-search-box" id="uid">
                 <input type="radio" name="uid" value="2051555906" title="-official-Spi酱" lay-filter="uid">
-                <input type="radio" name="uid" value="125979457" title="間宵雫_Official" lay-filter="uid">
+                <input type="radio" name="uid" value="1602464609" title="間宵雫" lay-filter="uid">
                 <input type="radio" name="uid" value="1300421811" title="竜輝音緒流_Official" lay-filter="uid">
                 <input type="radio" name="uid" value="1569389574" title="艾玛莉莉丝-channel" lay-filter="uid">
                 <input type="radio" name="uid" value="1944648347" title="御先蔵馬official" lay-filter="uid">
@@ -182,7 +100,7 @@
                             <th>礼物收益</th>
                             <th>SC收益</th>
                             <th>合计收益</th>
-                            <th>本/上月收益</th>
+                            <th id="multi_reward_th" onclick="get_nearly_seven_detail(3)">统计多场收益</th>
                         </tr>
                     </thead>
                     <tbody id="base_info_tbody">
@@ -424,6 +342,10 @@
         var last_month_total_reward = 0;
         // 加载层
         var load_index;
+        // 统计多场收益的下标
+        var multi_reward_index = 0;
+        // 存储当前多场收益
+        var now_multi_reward = 0;
 
         // 获取当月月份
         now_month = new Date(Date.now()).getMonth() + 1;
@@ -659,9 +581,24 @@
             };
         }
 
+        // 获取最近n场的直播数据（n场累加）
+        function get_nearly_seven_detail(num) {
+            console.log("获取最近" + num + "场的直播数据（累加）");
+            var json_len = user_base_data_json['data'].length;
+            for(var i = 0; i < num; i++) {
+                setTimeout(function () {
+                    // 避免溢出了
+                    if(multi_reward_index < json_len)
+                        get_detail(user_base_data_json["data"][multi_reward_index]["id"], multi_reward_index++);
+                    else
+                        return;
+                }, 500 * (multi_reward_index + 1));
+            }
+        }
+
         // 获取当场详情页信息
-        function get_detail(page_id, index, is_end) {
-            console.log("page_id:" + page_id + " index:" + index + " is_end:" + is_end); 
+        function get_detail(page_id, index) {
+            console.log("page_id:" + page_id + " index:" + index); 
             // 构建url 125.77.142.120
             var url = "https://api." + data_src + "/clip/" + page_id;
             // 建立所需的对象
@@ -678,6 +615,72 @@
             httpRequest.onerror = function(error) { 
                 console.log("请求get_detail出错！" + error); 
                 layer.msg('请求get_detail出错！');
+                layer.close(load_index);
+            };
+            httpRequest.ontimeout = function() { 
+                console.log("请求get_detail超时！"); 
+                layer.msg('请求get_detail超时！');
+                layer.close(load_index);
+            };
+            // 获取数据后的处理程序
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                    // 获取到json字符串
+                    var ret = httpRequest.responseText;
+                    //console.log(ret);
+                    // 转为JSON对象
+                    var json = JSON.parse(ret);
+                    // console.log(json);
+
+                    if (json['status'] != 0) {
+                        console.log("detail 请求异常");
+                        return 0;
+                    }
+
+                    if (json['data'].length == 0) {
+                        console.log("detail 无数据"); 
+                        return 0;
+                    }
+
+                    // user_detail_data_json = json;
+
+                    var danmu_density = document.getElementById("danmu_density" + index);
+                    var total_gift = document.getElementById("total_gift" + index);
+                    var total_superchat = document.getElementById("total_superchat" + index);
+                    var total_reward = document.getElementById("total_reward" + index);
+                    danmu_density.innerText = json["data"]["danmu_density"] + "个/分钟";
+                    total_gift.innerText = "￥" + json["data"]["total_gift"];
+                    total_superchat.innerText = "￥" + json["data"]["total_superchat"];
+                    total_reward.innerText = "￥" + json["data"]["total_reward"];
+
+                    now_multi_reward += parseFloat(json["data"]["total_reward"]);
+
+                    document.getElementById("month_total_reward0").innerText = "￥" + parseFloat(now_multi_reward).toFixed(1);
+
+                    return 1;
+                }
+            };
+        }
+
+        // 获取当场详情页信息
+        function get_detail_old(page_id, index, is_end) {
+            console.log("page_id:" + page_id + " index:" + index + " is_end:" + is_end); 
+            // 构建url 125.77.142.120
+            var url = "https://api." + data_src + "/clip/" + page_id;
+            // 建立所需的对象
+            var httpRequest = new XMLHttpRequest();
+            // 打开连接  将请求参数写在url中 
+            httpRequest.open('GET', url, true);
+            // 设置 HTTP 请求头部
+            httpRequest.setRequestHeader('Access-Control-Allow-Origin', '*');
+            httpRequest.setRequestHeader('Access-Control-Allow-Methods', '*');
+            httpRequest.setRequestHeader('Access-Control-Allow-Headers', '*');
+            // httpRequest.withCredentials = true;
+            // 发送请求  将请求参数写在URL中
+            httpRequest.send();
+            httpRequest.onerror = function(error) { 
+                console.log("请求get_detail出错！" + error); 
+                //layer.msg('请求get_detail出错！');
                 layer.close(load_index);
             };
             httpRequest.ontimeout = function() { 
@@ -1184,19 +1187,19 @@
                 total_reward.id = "total_reward" + i;
                 month_total_reward.id = "month_total_reward" + i;
 
-                setTimeout(function () {
-                    var this_month = new Date(user_base_data_json['data'][i]['end_time']).getMonth() + 1;
+                // setTimeout(function () {
+                //     var this_month = new Date(user_base_data_json['data'][i]['end_time']).getMonth() + 1;
 
-                    // 获取近2个月数据
-                    if((this_month != now_month && this_month != ((now_month - 1) == 0 ? 12 : (now_month - 1))) || i == (json_len - 1)) {
-                        if(end_get_detail_flag == 1) {
-                            get_detail(user_base_data_json["data"][i]["id"], i, end_get_detail_flag);
-                            end_get_detail_flag = 0;
-                        }
-                    } else {
-                        get_detail(user_base_data_json["data"][i]["id"], i, 0);
-                    }
-                }, 500 * (i + 1));
+                //     // 获取近2个月数据
+                //     if((this_month != now_month && this_month != ((now_month - 1) == 0 ? 12 : (now_month - 1))) || i == (json_len - 1)) {
+                //         if(end_get_detail_flag == 1) {
+                //             get_detail(user_base_data_json["data"][i]["id"], i, end_get_detail_flag);
+                //             end_get_detail_flag = 0;
+                //         }
+                //     } else {
+                //         get_detail(user_base_data_json["data"][i]["id"], i, 0);
+                //     }
+                // }, 500 * (i + 1));
 
                 td1.appendChild(cover);
                 td2.appendChild(title);
@@ -1226,6 +1229,8 @@
                 document.getElementById("base_info_tbody").appendChild(tr);
                 // sleep(100);
             }
+
+            get_nearly_seven_detail(3);
         }
 
         // 直播弹幕互动图
