@@ -247,12 +247,20 @@
     </div>
     <div id="guard_page">
         <div style="text-align: center; margin: 10px;">
+            <div class="layui-form ba-search-box" id="uid_guard">
+                <input type="radio" name="uid_guard" value="2051555906" title="-official-Spi酱" lay-filter="uid_guard">
+                <input type="radio" name="uid_guard" value="1602464609" title="間宵雫" lay-filter="uid_guard">
+                <input type="radio" name="uid_guard" value="1300421811" title="竜輝音緒流_Official" lay-filter="uid_guard">
+                <input type="radio" name="uid_guard" value="1569389574" title="艾玛莉莉丝-channel" lay-filter="uid_guard">
+                <input type="radio" name="uid_guard" value="1944648347" title="御先蔵馬official" lay-filter="uid_guard">
+                <input type="radio" name="uid_guard" value="2094031249" title="火羽ひのめ" lay-filter="uid_guard">
+            </div>
             <div class="layui-input-inline">
                 <label class="layui-form-label">用户UID</label>
                 <div class="layui-input-inline">
                     <input type="text" id="input_uid_guard" lay-verify="required" placeholder="请输入用户UID，例：123" class="layui-input" autocomplete="off">
                 </div>
-                <button type="button" class="layui-btn layui-btn-normal" onclick="get_user_guard()">搜索</button>
+                <button type="button" class="layui-btn layui-btn-normal" onclick="search_guard()">搜索</button>
             </div>
             <div class="layui-container" style="width: 95%;">
                 <table class="layui-table">
@@ -376,6 +384,11 @@
                 get_matsuri(data.value);
                 get_self_detail(data.value);
                 get_self_guard_detail(data.value);
+            });
+
+            form.on('radio(uid_guard)', function (data) {
+                load_index = layer.load();
+                get_user_guard(data.value);
             });
         });
 
@@ -804,12 +817,10 @@
         }
 
         // 获取用户舰团信息
-        function get_user_guard() {
-            load_index = layer.load();
+        function get_user_guard(uid) {
             // 清空数据
             document.getElementById("guard_info_tbody").innerHTML = "";
 
-            var uid = document.getElementById("input_uid_guard").value;
             // https://api.tokyo.vtbs.moe/v1/guard/2051555906
             var url = "https://api.tokyo.vtbs.moe/v1/guard/" + uid;
             // 建立所需的对象
@@ -843,6 +854,7 @@
                     // console.log(ret);
 
                     if(ret == "Not Found") {
+                        layer.close(load_index);
                         layer.msg('此用户数据没有找到，请修改uid');
                         return 0;
                     }
@@ -852,6 +864,7 @@
                     console.log(json);
 
                     if (json.length == 0) {
+                        layer.close(load_index);
                         layer.msg('此用户无舰团');
                         return 0;
                     }
@@ -938,7 +951,7 @@
         }
 
         function get_test2() {
-            const iframe    = document.getElementById('iframe1');
+            const iframe = document.getElementById('iframe1');
             iframe.src = "https://api.live.bilibili.com/xlive/web-ucenter/user/following?page=1&page_size=20";
             const iframeWin = iframe.contentWindow || iframe;
             const iframeDoc = iframe.contentDocument || iframeWin.document;
@@ -1738,6 +1751,15 @@
             get_matsuri(input_uid);
             get_self_detail(input_uid);
             get_self_guard_detail(input_uid);
+        }
+
+        // 搜索建团按钮
+        function search_guard() {
+            var input_uid_guard = document.getElementById("input_uid_guard").value;
+
+            load_index = layer.load();
+
+            get_user_guard(input_uid_guard);
         }
 
         // echarts 折线图
