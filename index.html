@@ -817,7 +817,7 @@
             // 打开连接  将请求参数写在url中 
             httpRequest.open('GET', url, true);
             // 设置 HTTP 请求头部
-            httpRequest.setRequestHeader('Access-Control-Allow-Origin', '*');
+            // httpRequest.setRequestHeader('Access-Control-Allow-Origin', '*');
             // 发送请求  将请求参数写在URL中
             httpRequest.send();
             httpRequest.onerror = function(error) { 
