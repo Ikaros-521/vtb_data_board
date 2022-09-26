@@ -423,6 +423,8 @@
                 else if(site == "huolonglive.com") iframe1.src = "https://huolonglive.com/#/";
                 else if(site == "biligank.com") iframe1.src = "https://biligank.com/";
                 else if(site == "danmaku.suki.club") iframe1.src = "https://danmaku.suki.club";
+
+                document.getElementById("iframe1").style.height = (document.body.clientHeight - document.getElementsByClassName("layui-nav")[0].offsetHeight - 10) + "px";
             }
         }
 
