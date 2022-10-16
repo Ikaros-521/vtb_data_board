@@ -21,11 +21,10 @@
             <li class="layui-nav-item"><a href="#" onclick="page_change('resource_page')">资源导航</a></li>
             <!--<li class="layui-nav-item"><a href="#" onclick="page_change('component_page')">查成分</a></li>-->
             <li class="layui-nav-item"><a href="#" onclick="page_change('guard_page')">舰团信息查询</a></li>
+            <!-- <li class="layui-nav-item"><a href="#" onclick="page_change('user_monitor_page')">粉丝、舰团监控</a></li> -->
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'danmaku.suki.club')">danmaku（查成分）</a></li>
-            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'vup.darkflame.ga')">vup月榜</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'matsuri.icu')">matsuri.icu</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'vtbs.moe')">vtbs.moe</a></li>
-            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'biligank.com')">biligank.com</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'huolonglive.com')">火龙榜</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('api_page')">API</a></li>
             <li class="layui-nav-item"><a href="#" onclick="jump_to_url('https://link.bilibili.com/p/center/index#/user-center/follow/1')">直播情况查询</a></li>
@@ -334,6 +333,17 @@
             听我说谢谢你~
         </div>
     </div>
+    <div id="user_monitor_page">
+        <div style="text-align: center; margin: 10px;">
+            <div class="layui-input-inline">
+                <label class="layui-form-label">用户UID</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="input_user_monitor" lay-verify="required" placeholder="请输入用户UID，例：123" class="layui-input" autocomplete="off">
+                </div>
+                <button type="button" class="layui-btn layui-btn-normal" onclick="start_user_monitor()">开始监测</button>
+            </div>
+        </div>
+    </div>
 
 
     <!-- 引入 layui.js 的 <script> 标签最好放置在 html 末尾 -->
@@ -361,6 +371,10 @@
         var multi_reward_index = 0;
         // 存储当前多场收益
         var now_multi_reward = 0;
+        // 存储上一次的粉丝数
+        var last_fans = 0;
+        // 存储上一次的舰团数
+        var last_guard = 0;
 
         // 获取当月月份
         now_month = new Date(Date.now()).getMonth() + 1;
@@ -417,7 +431,7 @@
         // 页面切换
         function page_change(id, site) {
             var page_arr = ["detail_page", "resource_page", "about_page", "iframe_page", "component_page", "api_page", 
-                "guard_page"];
+                "guard_page", "user_monitor_page"];
             for(var i = 0; i < page_arr.length; i++) {
                 document.getElementById(page_arr[i]).style.display = "none";
             }
@@ -1750,6 +1764,147 @@
                 }
             }
         }
+
+        // // 用户粉丝、舰长数监测
+        // function start_user_monitor() {
+        //     function get_base_info(uid) {
+        //         // 构建url
+        //         var url = "https://account.bilibili.com/api/member/getCardByMid?mid=" + uid;
+        //         // 建立所需的对象
+        //         var httpRequest = new XMLHttpRequest();
+        //         // 打开连接  将请求参数写在url中 
+        //         httpRequest.open('GET', url, true);
+        //         // 发送请求  将请求参数写在URL中
+        //         httpRequest.send();
+        //         httpRequest.onerror = function(error) { 
+        //             console.log("请求get_base_info出错！" + error); 
+        //             layer.msg('请求get_base_info出错！');
+        //             layer.close(load_index);
+        //         };
+        //         httpRequest.ontimeout = function() { 
+        //             console.log("请求get_base_info超时！"); 
+        //             layer.msg('请求get_base_info超时！');
+        //             layer.close(load_index);
+        //         };
+        //         // 获取数据后的处理程序
+        //         httpRequest.onreadystatechange = function () {
+        //             if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+        //                 // 获取到json字符串
+        //                 var ret = httpRequest.responseText;
+        //                 //console.log(ret);
+        //                 // 转为JSON对象
+        //                 var json = JSON.parse(ret);
+        //                 console.log(json);
+
+        //                 if (json.length == 0) {
+        //                     console.log("无数据");
+        //                     // layer.open({
+        //                     //     title: 'vtbs.moe',
+        //                     //     content: '请求无详细数据，请确认用户uid 或 平台异常'
+        //                     // });  
+        //                     return;
+        //                 }
+
+        //                 return 1;
+        //             }
+        //         };
+        //     }
+
+        //     function get_room_id(uid) {
+        //         // 构建url
+        //         var url = "https://api.live.bilibili.com/room/v2/Room/room_id_by_uid?uid=" + uid;
+        //         // 建立所需的对象
+        //         var httpRequest = new XMLHttpRequest();
+        //         // 打开连接  将请求参数写在url中 
+        //         httpRequest.open('GET', url, true);
+        //         // 发送请求  将请求参数写在URL中
+        //         httpRequest.send();
+        //         httpRequest.onerror = function(error) { 
+        //             console.log("请求get_base_info出错！" + error); 
+        //             layer.msg('请求get_base_info出错！');
+        //             layer.close(load_index);
+        //         };
+        //         httpRequest.ontimeout = function() { 
+        //             console.log("请求get_base_info超时！"); 
+        //             layer.msg('请求get_base_info超时！');
+        //             layer.close(load_index);
+        //         };
+        //         // 获取数据后的处理程序
+        //         httpRequest.onreadystatechange = function () {
+        //             if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+        //                 // 获取到json字符串
+        //                 var ret = httpRequest.responseText;
+        //                 //console.log(ret);
+        //                 // 转为JSON对象
+        //                 var json = JSON.parse(ret);
+        //                 console.log(json);
+
+        //                 if (json.length == 0) {
+        //                     console.log("无数据");
+        //                     // layer.open({
+        //                     //     title: 'vtbs.moe',
+        //                     //     content: '请求无详细数据，请确认用户uid 或 平台异常'
+        //                     // });  
+        //                     return;
+        //                 }
+
+        //                 //ret['data']['room_id']
+
+        //                 return 1;
+        //             }
+        //         };
+        //     }
+
+
+        //     function get_guard_info(uid, room_id) {
+        //         // 构建url
+        //         var url = "https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=" + room_id + 
+        //             '&page=1&ruid=' + uid + '&page_size=0';
+        //         // 建立所需的对象
+        //         var httpRequest = new XMLHttpRequest();
+        //         // 打开连接  将请求参数写在url中 
+        //         httpRequest.open('GET', url, true);
+        //         // 发送请求  将请求参数写在URL中
+        //         httpRequest.send();
+        //         httpRequest.onerror = function(error) { 
+        //             console.log("请求get_base_info出错！" + error); 
+        //             layer.msg('请求get_base_info出错！');
+        //             layer.close(load_index);
+        //         };
+        //         httpRequest.ontimeout = function() { 
+        //             console.log("请求get_base_info超时！"); 
+        //             layer.msg('请求get_base_info超时！');
+        //             layer.close(load_index);
+        //         };
+        //         // 获取数据后的处理程序
+        //         httpRequest.onreadystatechange = function () {
+        //             if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+        //                 // 获取到json字符串
+        //                 var ret = httpRequest.responseText;
+        //                 //console.log(ret);
+        //                 // 转为JSON对象
+        //                 var json = JSON.parse(ret);
+        //                 console.log(json);
+
+        //                 if (json.length == 0) {
+        //                     console.log("无数据");
+        //                     // layer.open({
+        //                     //     title: 'vtbs.moe',
+        //                     //     content: '请求无详细数据，请确认用户uid 或 平台异常'
+        //                     // });  
+        //                     return;
+        //                 }
+
+        //                 //ret['data']['room_id']
+
+        //                 return 1;
+        //             }
+        //         };
+        //     }
+
+        //     var uid = document.getElementById("input_user_monitor").value;
+        //     get_base_info(uid);
+        // }
 
         // 搜索按钮
         function search() {
