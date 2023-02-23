@@ -22,10 +22,14 @@
             <!--<li class="layui-nav-item"><a href="#" onclick="page_change('component_page')">查成分</a></li>-->
             <li class="layui-nav-item"><a href="#" onclick="page_change('guard_page')">舰团信息查询</a></li>
             <!-- <li class="layui-nav-item"><a href="#" onclick="page_change('user_monitor_page')">粉丝、舰团监控</a></li> -->
-            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'danmaku.suki.club')">danmaku（查成分）</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'danmakus.com')">danmakus</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'matsuri.icu')">matsuri.icu</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'vtbs.moe')">vtbs.moe</a></li>
-            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'huolonglive.com')">火龙榜</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'vup.loveava.top')">vup.loveava.top</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'ddstats')">ddstats</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'zeroroku.com')">zeroroku.com</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'laplace.live')">laplace.live</a></li>
+            <!-- <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'huolonglive.com')">火龙榜</a></li> -->
             <li class="layui-nav-item"><a href="#" onclick="page_change('api_page')">API</a></li>
             <li class="layui-nav-item"><a href="#" onclick="jump_to_url('https://link.bilibili.com/p/center/index#/user-center/follow/1')">直播情况查询</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('about_page')">关于</a></li>
@@ -170,13 +174,19 @@
                     <br>
                     <a href="https://asdanmaku.com/" target="_blank">asdanmaku.com：主播弹幕、收益等相关信息查询2（g了）</a>
                     <br>
-                    <a href="https://danmaku.suki.club" target="_blank">danmaku.suki.club：主播弹幕收益等相关信息、用户弹幕筛查等</a>
+                    <a href="https://danmakus.com" target="_blank">danmakus.com：主播弹幕收益等相关信息、用户弹幕筛查等</a>
                     <br>
                     <a href="http://biligank.com/" target="_blank">biligank.com：主播弹幕、收益等相关信息查询3（刚开）</a>
                     <br>
                     <a href="https://huolonglive.com/#/" target="_blank">huolonglive.com：火龙榜，同传榜单</a>
                     <br>
-                    <a href="https://vtbs.moe/" target="_blank">vtbs.moe：主播详情查询（舰团、粉丝变化等）</a>
+                    <a href="https://vup.loveava.top/ranking" target="_blank">vup.loveava.top：主播营收榜单信息</a>
+                    <br>
+                    <a href="https://ddstats.ericlamm.xyz/" target="_blank">ddstats.ericlamm.xyz：DD信息排行榜</a>
+                    <br>
+                    <a href="https://zeroroku.com/bilibili" target="_blank">zeroroku.com：b站用户个人相关信息</a>
+                    <br>
+                    <a href="https://laplace.live/" target="_blank">laplace.live：b站主播弹幕收益等相关信息（算是个聚合网）</a>
                 </div>
             </div>
             <div class="layui-card">
@@ -444,7 +454,11 @@
                 else if(site == "matsuri.icu") iframe1.src = "https://matsuri.icu";
                 else if(site == "huolonglive.com") iframe1.src = "https://huolonglive.com/#/";
                 else if(site == "biligank.com") iframe1.src = "https://biligank.com/";
-                else if(site == "danmaku.suki.club") iframe1.src = "https://danmaku.suki.club";
+                else if(site == "danmakus.com") iframe1.src = "https://danmakus.com";
+                else if(site == "vup.loveava.top") iframe1.src = "https://vup.loveava.top/ranking";
+                else if(site == "ddstats") iframe1.src = "https://ddstats.ericlamm.xyz/";
+                else if(site == "zeroroku.com") iframe1.src = "https://zeroroku.com/bilibili";
+                else if(site == "laplace.live") iframe1.src = "https://laplace.live/";
 
                 document.getElementById("iframe1").style.height = (document.documentElement.clientHeight - document.getElementsByClassName("layui-nav")[0].offsetHeight - 10) + "px";
             }
