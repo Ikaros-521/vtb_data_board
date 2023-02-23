@@ -574,16 +574,42 @@
             };
             // 获取数据后的处理程序
             httpRequest.onreadystatechange = function () {
-                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
-                    // 获取到json字符串
-                    var ret = httpRequest.responseText;
-                    //console.log(ret);
-                    // 转为JSON对象
-                    var json = JSON.parse(ret);
-                    console.log(json);
+                if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                    if (httpRequest.status === 302) {
+                        var redirectUrl = httpRequest.getResponseHeader('Location');
+                        var redirectRequest = new XMLHttpRequest();
+                        redirectRequest.open('GET', redirectUrl, true);
+                        redirectRequest.send();
 
-                    try {
-                        if (json['code'] != 200) {
+                        console.log("redirectUrl=" + redirectUrl)
+                        // handle redirect response
+                    } else if (httpRequest.status == 200) {
+                        // 获取到json字符串
+                        var ret = httpRequest.responseText;
+                        //console.log(ret);
+                        // 转为JSON对象
+                        var json = JSON.parse(ret);
+                        console.log(json);
+
+                        try {
+                            if (json['code'] != 200) {
+                                console.log("danmakus.com 请求异常");
+                                layer.open({
+                                    title: 'danmakus',
+                                    content: '请求异常（可能是数据源服务器出问题了，建议稍候尝试）'
+                                });
+                                return;
+                            }
+
+                            if (json['data'].length == 0) {
+                                console.log("danmakus.com 无数据");
+                                layer.open({
+                                    title: 'matsuri',
+                                    content: '请求无详细数据，请确认用户uid 或 平台异常'
+                                });
+                                return;
+                            }
+                        } catch {
                             console.log("danmakus.com 请求异常");
                             layer.open({
                                 title: 'danmakus',
@@ -591,28 +617,12 @@
                             });
                             return;
                         }
-
-                        if (json['data'].length == 0) {
-                            console.log("danmakus.com 无数据");
-                            layer.open({
-                                title: 'matsuri',
-                                content: '请求无详细数据，请确认用户uid 或 平台异常'
-                            });
-                            return;
-                        }
-                    } catch {
-                        console.log("danmakus.com 请求异常");
-                        layer.open({
-                            title: 'danmakus',
-                            content: '请求异常（可能是数据源服务器出问题了，建议稍候尝试）'
-                        });
-                        return;
+                        
+                        // 关闭加载圈
+                        layer.close(load_index);
+                        // 绘制图表
+                        generate_chart4(json);
                     }
-                    
-                    // 关闭加载圈
-                    layer.close(load_index);
-                    // 绘制图表
-                    generate_chart4(json);
                 }
             };
         }
