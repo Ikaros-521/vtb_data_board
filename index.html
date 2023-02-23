@@ -557,6 +557,7 @@
             var httpRequest = new XMLHttpRequest();
             // 打开连接  将请求参数写在url中 
             httpRequest.open('GET', url, true);
+            // httpRequest.setRequestHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
             // httpRequest.withCredentials = true;
             // 设置 HTTP 请求头部
             // httpRequest.setRequestHeader('Access-Control-Allow-Origin', '*');
