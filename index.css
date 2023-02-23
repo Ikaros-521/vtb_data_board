@@ -48,6 +48,12 @@
     overflow: hidden;
 }
 
+#chart-container4 {
+    position: relative;
+    height: 800px;
+    overflow: hidden;
+}
+
 #chart_main3 {
     display: none;
 }

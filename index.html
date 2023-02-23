@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="referrer" content="no-referrer"/>
+    <meta name="referrer" content="no-referrer" />
     <title>VTB数据看板</title>
     <link rel="shortcut icon" href="img/logo.png">
     <link rel="icon" type="image/png" href="img/logo.png" sizes="192x192">
@@ -19,19 +19,26 @@
         <ul class="layui-nav" lay-filter="">
             <li class="layui-nav-item layui-this"><a href="#" onclick="page_change('detail_page')">首页</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('resource_page')">资源导航</a></li>
-            <!--<li class="layui-nav-item"><a href="#" onclick="page_change('component_page')">查成分</a></li>-->
+            <li class="layui-nav-item"><a href="#" onclick="page_change('composition_page')">查成分</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('guard_page')">舰团信息查询</a></li>
             <!-- <li class="layui-nav-item"><a href="#" onclick="page_change('user_monitor_page')">粉丝、舰团监控</a></li> -->
-            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'danmakus.com')">danmakus</a></li>
-            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'matsuri.icu')">matsuri.icu</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'danmakus.com')">danmakus</a>
+            </li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'matsuri.icu')">matsuri.icu</a>
+            </li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'vtbs.moe')">vtbs.moe</a></li>
-            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'vup.loveava.top')">vup.loveava.top</a></li>
+            <li class="layui-nav-item"><a href="#"
+                    onclick="page_change('iframe_page', 'vup.loveava.top')">vup.loveava.top</a></li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'ddstats')">ddstats</a></li>
-            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'zeroroku.com')">zeroroku.com</a></li>
-            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'laplace.live')">laplace.live</a></li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'zeroroku.com')">zeroroku.com</a>
+            </li>
+            <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'laplace.live')">laplace.live</a>
+            </li>
             <!-- <li class="layui-nav-item"><a href="#" onclick="page_change('iframe_page', 'huolonglive.com')">火龙榜</a></li> -->
             <li class="layui-nav-item"><a href="#" onclick="page_change('api_page')">API</a></li>
-            <li class="layui-nav-item"><a href="#" onclick="jump_to_url('https://link.bilibili.com/p/center/index#/user-center/follow/1')">直播情况查询</a></li>
+            <li class="layui-nav-item"><a href="#"
+                    onclick="jump_to_url('https://link.bilibili.com/p/center/index#/user-center/follow/1')">直播情况查询</a>
+            </li>
             <li class="layui-nav-item"><a href="#" onclick="page_change('about_page')">关于</a></li>
         </ul>
     </div>
@@ -49,7 +56,8 @@
                 <div class="layui-input-inline">
                     <label class="layui-form-label">用户UID</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="input_uid" lay-verify="required" placeholder="请输入用户UID，例：2051555906" class="layui-input" autocomplete="off">
+                        <input type="text" id="input_uid" lay-verify="required" placeholder="请输入用户UID，例：2051555906"
+                            class="layui-input" autocomplete="off">
                     </div>
                     <button type="button" class="layui-btn layui-btn-normal" onclick="search()">搜索</button>
                 </div>
@@ -57,8 +65,10 @@
             <div class="layui-btn-container">
                 <button type="button" class="layui-btn layui-btn-normal" onclick="show_datas(0)">显示直播数据</button>
                 <button type="button" class="layui-btn layui-btn-normal" onclick="show_datas(1)">显示用户数据</button>
-                <button type="button" class="layui-btn layui-btn-normal" onclick="show_hide_div('chart_main3')">显隐弹幕密度图</button>
-                <button type="button" class="layui-btn layui-btn-normal" onclick="download_all_base_data()">下载离线数据包</button>
+                <button type="button" class="layui-btn layui-btn-normal"
+                    onclick="show_hide_div('chart_main3')">显隐弹幕密度图</button>
+                <button type="button" class="layui-btn layui-btn-normal"
+                    onclick="download_all_base_data()">下载离线数据包</button>
             </div>
             <div style="padding-left: 40%;margin: 10px;">
                 <div class="fileDiv">
@@ -67,7 +77,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div id="base_info">
             <div id="chart_main">
                 <div id="chart-container"></div>
@@ -107,12 +117,12 @@
                         </tr>
                     </thead>
                     <tbody id="base_info_tbody">
-    
+
                     </tbody>
                 </table>
             </div>
         </div>
-    
+
         <div id="self_info">
             <div id="chart_main2">
                 <div id="chart-container2"></div>
@@ -138,7 +148,7 @@
                         </tr>
                     </thead>
                     <tbody id="self_guard_tbody">
-    
+
                     </tbody>
                 </table>
             </div>
@@ -157,7 +167,7 @@
                         </tr>
                     </thead>
                     <tbody id="self_info_tbody">
-    
+
                     </tbody>
                 </table>
             </div>
@@ -168,7 +178,8 @@
             <div class="layui-card">
                 <div class="layui-card-header">主播数据查询网址</div>
                 <div class="layui-card-body">
-                    <a href="https://vup.darkflame.ga/ranking/month?sortby=income" target="_blank">vup.darkflame.ga：B站营收月榜查询</a>
+                    <a href="https://vup.darkflame.ga/ranking/month?sortby=income"
+                        target="_blank">vup.darkflame.ga：B站营收月榜查询</a>
                     <br>
                     <a href="https://matsuri.icu/" target="_blank">matsuri.icu：主播弹幕、收益等相关信息查询</a>
                     <br>
@@ -192,14 +203,16 @@
             <div class="layui-card">
                 <div class="layui-card-header">VTB主页模板</div>
                 <div class="layui-card-body">
-                    <a href="https://gitee.com/ikaros-521/VTB_Page2" target="_blank">VTB_Page2：通过修改config.js配置文件来实现页面内容自定义加载</a>
+                    <a href="https://gitee.com/ikaros-521/VTB_Page2"
+                        target="_blank">VTB_Page2：通过修改config.js配置文件来实现页面内容自定义加载</a>
                     <a href="https://ikaros-521.gitee.io/vtb_page2/" target="_blank">效果参考</a>
                 </div>
             </div>
             <div class="layui-card">
                 <div class="layui-card-header">语音翻译软件</div>
                 <div class="layui-card-body">
-                    <a href="https://sayonari.coresv.com/ninshikiChan/20210822_config.html" target="_blank">音声認識字幕ちゃん：免费在线语音识别转换软件</a>
+                    <a href="https://sayonari.coresv.com/ninshikiChan/20210822_config.html"
+                        target="_blank">音声認識字幕ちゃん：免费在线语音识别转换软件</a>
                 </div>
             </div>
             <div class="layui-card">
@@ -215,7 +228,8 @@
             <div class="layui-card">
                 <div class="layui-card-header">直播同传辅助</div>
                 <div class="layui-card-body">
-                    <a href="https://github.com/FHChen0420/LyricDanmu/releases" target="_blank">LyricDanmu：B站直播歌词/同传弹幕发送工具</a>
+                    <a href="https://github.com/FHChen0420/LyricDanmu/releases"
+                        target="_blank">LyricDanmu：B站直播歌词/同传弹幕发送工具</a>
                     <a href="data/LyricDanmu.png" target="_blank">使用演示</a>
                     <br>
                     <a href="data/web-Danmu-v2.1.js" target="_blank">PC浏览器自动补括号+一键常用语 辅助JS程序</a>
@@ -234,7 +248,8 @@
             <div class="layui-card">
                 <div class="layui-card-header">直播弹幕插件</div>
                 <div class="layui-card-body">
-                    <a href="https://github.com/xfgryujk/blivechat/releases" target="_blank">blivechat：用于OBS的仿YouTube风格的bilibili直播评论栏</a>
+                    <a href="https://github.com/xfgryujk/blivechat/releases"
+                        target="_blank">blivechat：用于OBS的仿YouTube风格的bilibili直播评论栏</a>
                     <a href="https://github.com/xfgryujk/blivechat/blob/master/README.md" target="_blank">使用说明</a>
                     <br>
                     <a href="https://rec.danmuji.org/" target="_blank">B站弹幕姬：开源、简洁的B站直播弹幕工具</a>
@@ -255,7 +270,8 @@
             <div class="layui-input-inline">
                 <label class="layui-form-label">用户UID</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="input_uid_component" lay-verify="required" placeholder="请输入用户UID，例：123" class="layui-input" autocomplete="off">
+                    <input type="text" id="input_uid_component" lay-verify="required" placeholder="请输入用户UID，例：123"
+                        class="layui-input" autocomplete="off">
                 </div>
                 <button type="button" class="layui-btn layui-btn-normal" onclick="get_user_attentions()">搜索</button>
             </div>
@@ -274,7 +290,8 @@
             <div class="layui-input-inline">
                 <label class="layui-form-label">用户UID</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="input_uid_guard" lay-verify="required" placeholder="请输入用户UID，例：123" class="layui-input" autocomplete="off">
+                    <input type="text" id="input_uid_guard" lay-verify="required" placeholder="请输入用户UID，例：123"
+                        class="layui-input" autocomplete="off">
                 </div>
                 <button type="button" class="layui-btn layui-btn-normal" onclick="search_guard()">搜索</button>
             </div>
@@ -295,10 +312,25 @@
                         </tr>
                     </thead>
                     <tbody id="guard_info_tbody">
-    
+
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+    <div id="composition_page">
+        <div style="text-align: center; margin: 10px;">
+            <div class="layui-input-inline">
+                <label class="layui-form-label">用户UID</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="input_uid_composition" lay-verify="required" placeholder="请输入用户UID，例：123"
+                        class="layui-input" autocomplete="off">
+                </div>
+                <button type="button" class="layui-btn layui-btn-normal" onclick="get_danmakus_user_info()">搜索</button>
+            </div>
+        </div>
+        <div id="chart_main4">
+            <div id="chart-container4"></div>
         </div>
     </div>
     <div id="iframe_page">
@@ -314,7 +346,8 @@
                             <p>请求网址：https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList</p>
                             <p>请求方法：get</p>
                             <p>传参：{"roomid":用户房间号,"page":页数,"ruid":用户UID,"page_size":页人数（一页几个用户信息）}</p>
-                            <a onclick="jump_to_url('https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=22748536&page=1&ruid=2094031249&page_size=0')">例如：https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=22748536&page=1&ruid=2094031249&page_size=0</a>
+                            <a
+                                onclick="jump_to_url('https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=22748536&page=1&ruid=2094031249&page_size=0')">例如：https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=22748536&page=1&ruid=2094031249&page_size=0</a>
                         </div>
                     </div>
                 </div>
@@ -329,7 +362,8 @@
                             <p>请求网址：https://account.bilibili.com/api/member/getCardByMid</p>
                             <p>请求方法：get</p>
                             <p>传参：{"mid":用户UID}</p>
-                            <a onclick="jump_to_url('https://account.bilibili.com/api/member/getCardByMid?mid=2094031249')">例如：https://account.bilibili.com/api/member/getCardByMid?mid=2094031249</a>
+                            <a
+                                onclick="jump_to_url('https://account.bilibili.com/api/member/getCardByMid?mid=2094031249')">例如：https://account.bilibili.com/api/member/getCardByMid?mid=2094031249</a>
                         </div>
                     </div>
                 </div>
@@ -348,7 +382,8 @@
             <div class="layui-input-inline">
                 <label class="layui-form-label">用户UID</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="input_user_monitor" lay-verify="required" placeholder="请输入用户UID，例：123" class="layui-input" autocomplete="off">
+                    <input type="text" id="input_user_monitor" lay-verify="required" placeholder="请输入用户UID，例：123"
+                        class="layui-input" autocomplete="off">
                 </div>
                 <button type="button" class="layui-btn layui-btn-normal" onclick="start_user_monitor()">开始监测</button>
             </div>
@@ -389,7 +424,7 @@
         // 获取当月月份
         now_month = new Date(Date.now()).getMonth() + 1;
 
-        window.onload = function() {
+        window.onload = function () {
             // console.log("document.body.clientHeight=" + document.body.clientHeight + " document.getElementsByClassName('layui-nav')[0].offsetHeight:" + document.getElementsByClassName("layui-nav")[0].offsetHeight)
             // document.getElementById("iframe1").style.height = (document.body.clientHeight - document.getElementsByClassName("layui-nav")[0].offsetHeight - 10) + "px";
         };
@@ -427,11 +462,11 @@
         // 显示隐藏div 
         function show_hide_div(id, type) {
             var dom = document.getElementById(id);
-            if(type != null) {
+            if (type != null) {
                 dom.style.display = type;
                 return;
             }
-            if(dom.style.display == "block" || dom.style.display == "") {
+            if (dom.style.display == "block" || dom.style.display == "") {
                 dom.style.display = "none";
             } else {
                 dom.style.display = "block";
@@ -440,25 +475,25 @@
 
         // 页面切换
         function page_change(id, site) {
-            var page_arr = ["detail_page", "resource_page", "about_page", "iframe_page", "component_page", "api_page", 
-                "guard_page", "user_monitor_page"];
-            for(var i = 0; i < page_arr.length; i++) {
+            var page_arr = ["detail_page", "resource_page", "about_page", "iframe_page", "component_page", "api_page",
+                "guard_page", "user_monitor_page", "composition_page"];
+            for (var i = 0; i < page_arr.length; i++) {
                 document.getElementById(page_arr[i]).style.display = "none";
             }
-            
+
             document.getElementById(id).style.display = "block";
-            if(id == "iframe_page") {
+            if (id == "iframe_page") {
                 var iframe1 = document.getElementById("iframe1");
-                if(site == "vtbs.moe") iframe1.src = "https://vtbs.moe";
-                else if(site == "vup.darkflame.ga") iframe1.src = "https://vup.darkflame.ga/ranking/month?sortby=income";
-                else if(site == "matsuri.icu") iframe1.src = "https://matsuri.icu";
-                else if(site == "huolonglive.com") iframe1.src = "https://huolonglive.com/#/";
-                else if(site == "biligank.com") iframe1.src = "https://biligank.com/";
-                else if(site == "danmakus.com") iframe1.src = "https://danmakus.com";
-                else if(site == "vup.loveava.top") iframe1.src = "https://vup.loveava.top/ranking";
-                else if(site == "ddstats") iframe1.src = "https://ddstats.ericlamm.xyz/";
-                else if(site == "zeroroku.com") iframe1.src = "https://zeroroku.com/bilibili";
-                else if(site == "laplace.live") iframe1.src = "https://laplace.live/";
+                if (site == "vtbs.moe") iframe1.src = "https://vtbs.moe";
+                else if (site == "vup.darkflame.ga") iframe1.src = "https://vup.darkflame.ga/ranking/month?sortby=income";
+                else if (site == "matsuri.icu") iframe1.src = "https://matsuri.icu";
+                else if (site == "huolonglive.com") iframe1.src = "https://huolonglive.com/#/";
+                else if (site == "biligank.com") iframe1.src = "https://biligank.com/";
+                else if (site == "danmakus.com") iframe1.src = "https://danmakus.com";
+                else if (site == "vup.loveava.top") iframe1.src = "https://vup.loveava.top/ranking";
+                else if (site == "ddstats") iframe1.src = "https://ddstats.ericlamm.xyz/";
+                else if (site == "zeroroku.com") iframe1.src = "https://zeroroku.com/bilibili";
+                else if (site == "laplace.live") iframe1.src = "https://laplace.live/";
 
                 document.getElementById("iframe1").style.height = (document.documentElement.clientHeight - document.getElementsByClassName("layui-nav")[0].offsetHeight - 10) + "px";
             }
@@ -467,7 +502,7 @@
         // 睡眠 毫秒
         function sleep(delay) {
             let start = +new Date()
-            while (+new Date() - start < delay) {}
+            while (+new Date() - start < delay) { }
         }
 
         // 下载离线数据包
@@ -480,10 +515,10 @@
 
         // 显示数据表格 0直播数据 1用户数据
         function show_datas(type) {
-            if(0 == type) {
+            if (0 == type) {
                 document.getElementById("base_info").style.display = "block";
                 document.getElementById("self_info").style.display = "none";
-            } else if(1 == type) {
+            } else if (1 == type) {
                 document.getElementById("base_info").style.display = "none";
                 document.getElementById("self_info").style.display = "block";
             }
@@ -498,17 +533,87 @@
             var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours())
             var m = ':' + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
             var s = ':' + (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds())
-            
-            if(type == 0) {
+
+            if (type == 0) {
                 commonTime = date.toLocaleString();
                 return commonTime;
-            } else if(type == 1) {
+            } else if (type == 1) {
                 return Y + M + D + ' ' + h + m + s;
-            } else if(type == 2) {
+            } else if (type == 2) {
                 return Y + M + D + ' ' + h + m;
             } else {
                 return h + m;
             }
+        }
+
+        // 获取danmakus的用户观看信息
+        function get_danmakus_user_info() {
+            // 加载条显示
+            load_index = layer.load();
+            var uid = document.getElementById("input_uid_composition").value;
+            // 构建url
+            var url = "https://ukamnads.icu/api/search/user/channel?uid=" + uid;
+            // 建立所需的对象
+            var httpRequest = new XMLHttpRequest();
+            // 打开连接  将请求参数写在url中 
+            httpRequest.open('GET', url, true);
+            // 设置 HTTP 请求头部
+            // httpRequest.setRequestHeader('Access-Control-Allow-Origin', '*');
+            // 发送请求  将请求参数写在URL中
+            httpRequest.send();
+            httpRequest.onerror = function (error) {
+                console.log("请求get_danmakus_user_info出错！" + error);
+                layer.msg('请求get_danmakus_user_info出错！');
+                layer.close(load_index);
+            };
+            httpRequest.ontimeout = function () {
+                console.log("请求get_danmakus_user_info超时！");
+                layer.msg('请求get_danmakus_user_info超时！');
+                layer.close(load_index);
+            };
+            // 获取数据后的处理程序
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                    // 获取到json字符串
+                    var ret = httpRequest.responseText;
+                    //console.log(ret);
+                    // 转为JSON对象
+                    var json = JSON.parse(ret);
+                    console.log(json);
+
+                    try {
+                        if (json['code'] != 200) {
+                            console.log("danmakus.com 请求异常");
+                            layer.open({
+                                title: 'danmakus',
+                                content: '请求异常（可能是数据源服务器出问题了，建议稍候尝试）'
+                            });
+                            return;
+                        }
+
+                        if (json['data'].length == 0) {
+                            console.log("danmakus.com 无数据");
+                            layer.open({
+                                title: 'matsuri',
+                                content: '请求无详细数据，请确认用户uid 或 平台异常'
+                            });
+                            return;
+                        }
+                    } catch {
+                        console.log("danmakus.com 请求异常");
+                        layer.open({
+                            title: 'danmakus',
+                            content: '请求异常（可能是数据源服务器出问题了，建议稍候尝试）'
+                        });
+                        return;
+                    }
+                    
+                    // 关闭加载圈
+                    layer.close(load_index);
+                    // 绘制图表
+                    generate_chart4(json);
+                }
+            };
         }
 
         function get_matsuri(uid) {
@@ -525,13 +630,13 @@
             httpRequest.setRequestHeader('Access-Control-Allow-Origin', '*');
             // 发送请求  将请求参数写在URL中
             httpRequest.send();
-            httpRequest.onerror = function(error) { 
-                console.log("请求get_matsuri出错！" + error); 
+            httpRequest.onerror = function (error) {
+                console.log("请求get_matsuri出错！" + error);
                 layer.msg('请求get_matsuri出错！');
                 layer.close(load_index);
             };
-            httpRequest.ontimeout = function() { 
-                console.log("请求get_matsuri超时！"); 
+            httpRequest.ontimeout = function () {
+                console.log("请求get_matsuri超时！");
                 layer.msg('请求get_matsuri超时！');
                 layer.close(load_index);
             };
@@ -551,7 +656,7 @@
                         layer.open({
                             title: 'matsuri',
                             content: '请求异常（可能是数据源服务器出问题了，建议稍候尝试或者导入本地数据查看）'
-                        }); 
+                        });
                         return;
                     }
 
@@ -561,7 +666,7 @@
                         layer.open({
                             title: 'matsuri',
                             content: '请求无详细数据，请确认用户uid 或 平台异常'
-                        });  
+                        });
                         return;
                     }
 
@@ -585,13 +690,13 @@
             httpRequest.setRequestHeader('Access-Control-Allow-Origin', '*');
             // 发送请求  将请求参数写在URL中
             httpRequest.send();
-            httpRequest.onerror = function(error) { 
-                console.log("请求get_asdanmaku出错！" + error); 
+            httpRequest.onerror = function (error) {
+                console.log("请求get_asdanmaku出错！" + error);
                 layer.msg('请求get_asdanmaku出错！');
                 layer.close(load_index);
             };
-            httpRequest.ontimeout = function() { 
-                console.log("请求get_asdanmaku超时！"); 
+            httpRequest.ontimeout = function () {
+                console.log("请求get_asdanmaku超时！");
                 layer.msg('请求get_asdanmaku超时！');
                 layer.close(load_index);
             };
@@ -610,7 +715,7 @@
                         layer.open({
                             title: 'matsuri & asdanmaku',
                             content: '请求异常（可能是数据源服务器出问题了，建议稍候尝试或者导入本地数据查看）'
-                        }); 
+                        });
                         return;
                     }
 
@@ -619,7 +724,7 @@
                         layer.open({
                             title: 'matsuri & asdanmaku',
                             content: '请求无详细数据，请确认用户uid 或 平台异常'
-                        });  
+                        });
                         return;
                     }
 
@@ -636,10 +741,10 @@
         function get_nearly_seven_detail(num) {
             console.log("获取最近" + num + "场的直播数据（累加）");
             var json_len = user_base_data_json['data'].length;
-            for(var i = 0; i < num; i++) {
+            for (var i = 0; i < num; i++) {
                 setTimeout(function () {
                     // 避免溢出了
-                    if(multi_reward_index < json_len)
+                    if (multi_reward_index < json_len)
                         get_detail(user_base_data_json["data"][multi_reward_index]["id"], multi_reward_index++);
                     else
                         return;
@@ -649,7 +754,7 @@
 
         // 获取当场详情页信息
         function get_detail(page_id, index) {
-            console.log("page_id:" + page_id + " index:" + index); 
+            console.log("page_id:" + page_id + " index:" + index);
             // 构建url 125.77.142.120
             var url = "https://api." + data_src + "/clip/" + page_id;
             // 建立所需的对象
@@ -663,13 +768,13 @@
             // httpRequest.withCredentials = true;
             // 发送请求  将请求参数写在URL中
             httpRequest.send();
-            httpRequest.onerror = function(error) { 
-                console.log("请求get_detail出错！" + error); 
+            httpRequest.onerror = function (error) {
+                console.log("请求get_detail出错！" + error);
                 layer.msg('请求get_detail出错！');
                 layer.close(load_index);
             };
-            httpRequest.ontimeout = function() { 
-                console.log("请求get_detail超时！"); 
+            httpRequest.ontimeout = function () {
+                console.log("请求get_detail超时！");
                 layer.msg('请求get_detail超时！');
                 layer.close(load_index);
             };
@@ -689,7 +794,7 @@
                     }
 
                     if (json['data'].length == 0) {
-                        console.log("detail 无数据"); 
+                        console.log("detail 无数据");
                         return 0;
                     }
 
@@ -715,7 +820,7 @@
 
         // 获取当场详情页信息
         function get_detail_old(page_id, index, is_end) {
-            console.log("page_id:" + page_id + " index:" + index + " is_end:" + is_end); 
+            console.log("page_id:" + page_id + " index:" + index + " is_end:" + is_end);
             // 构建url 125.77.142.120
             var url = "https://api." + data_src + "/clip/" + page_id;
             // 建立所需的对象
@@ -729,13 +834,13 @@
             // httpRequest.withCredentials = true;
             // 发送请求  将请求参数写在URL中
             httpRequest.send();
-            httpRequest.onerror = function(error) { 
-                console.log("请求get_detail出错！" + error); 
+            httpRequest.onerror = function (error) {
+                console.log("请求get_detail出错！" + error);
                 //layer.msg('请求get_detail出错！');
                 layer.close(load_index);
             };
-            httpRequest.ontimeout = function() { 
-                console.log("请求get_detail超时！"); 
+            httpRequest.ontimeout = function () {
+                console.log("请求get_detail超时！");
                 layer.msg('请求get_detail超时！');
                 layer.close(load_index);
             };
@@ -755,7 +860,7 @@
                     }
 
                     if (json['data'].length == 0) {
-                        console.log("detail 无数据"); 
+                        console.log("detail 无数据");
                         return 0;
                     }
 
@@ -773,7 +878,7 @@
                     var end_time = json["data"]["end_time"];
                     var this_month = new Date(end_time).getMonth() + 1;
 
-                    if(this_month == now_month) {
+                    if (this_month == now_month) {
                         now_month_total_reward = now_month_total_reward + parseFloat(json["data"]["total_reward"]);
                         // console.log(now_month_total_reward + " " + json["data"]["total_reward"] + " " +　is_end);
                     } else if (this_month == ((now_month - 1) == 0 ? 12 : (now_month - 1))) {
@@ -781,9 +886,9 @@
                         // console.log(last_month_total_reward + " " + json["data"]["total_reward"] + " " +　is_end);
                     }
 
-                    if(is_end == 1) {
+                    if (is_end == 1) {
                         // console.log("月总：" + now_month_total_reward);
-                        setTimeout(function() {
+                        setTimeout(function () {
                             document.getElementById("month_total_reward0").innerText = "￥" + parseFloat(now_month_total_reward).toFixed(1) +
                                 "/" + parseFloat(last_month_total_reward).toFixed(1);
                         }, 1000);
@@ -806,12 +911,12 @@
             httpRequest.setRequestHeader('Access-Control-Allow-Origin', '*');
             // 发送请求  将请求参数写在URL中
             httpRequest.send();
-            httpRequest.onerror = function(error) { 
-                console.log("请求get_comment_data出错！" + error); 
+            httpRequest.onerror = function (error) {
+                console.log("请求get_comment_data出错！" + error);
                 layer.msg('请求get_comment_data出错！');
             };
-            httpRequest.ontimeout = function() { 
-                console.log("请求get_comment_data超时！"); 
+            httpRequest.ontimeout = function () {
+                console.log("请求get_comment_data超时！");
                 layer.msg('请求get_comment_data超时！');
             };
             // 获取数据后的处理程序
@@ -830,7 +935,7 @@
                     }
 
                     if (json['data'].length == 0) {
-                        console.log("comment_data 无数据"); 
+                        console.log("comment_data 无数据");
                         return 0;
                     }
 
@@ -869,13 +974,13 @@
             // httpRequest.setRequestHeader('Access-Control-Allow-Origin', '*');
             // 发送请求  将请求参数写在URL中
             httpRequest.send();
-            httpRequest.onerror = function(error) { 
-                console.log("请求get_user_guard出错！" + error); 
+            httpRequest.onerror = function (error) {
+                console.log("请求get_user_guard出错！" + error);
                 layer.msg('请求get_user_guard出错！');
                 layer.close(load_index);
             };
-            httpRequest.ontimeout = function() { 
-                console.log("请求get_user_guard超时！"); 
+            httpRequest.ontimeout = function () {
+                console.log("请求get_user_guard超时！");
                 layer.msg('请求get_user_guard超时！');
                 layer.close(load_index);
             };
@@ -891,7 +996,7 @@
                     var ret = httpRequest.responseText;
                     // console.log(ret);
 
-                    if(ret == "Not Found") {
+                    if (ret == "Not Found") {
                         layer.close(load_index);
                         layer.msg('此用户数据没有找到，请修改uid');
                         return 0;
@@ -907,7 +1012,7 @@
                         return 0;
                     }
 
-                    for(var i = 0; i < json.length; i++) {
+                    for (var i = 0; i < json.length; i++) {
                         var tr = document.createElement("tr");
                         var td1 = document.createElement("td");
                         var td2 = document.createElement("td");
@@ -925,9 +1030,9 @@
                         uname.innerText = json[i]['uname'];
                         face.src = json[i]['face'];
                         var guard_name;
-                        if(json[i]['level'] == 0) guard_name = "总督";
-                        else if(json[i]['level'] == 1) guard_name = "提督";
-                        else if(json[i]['level'] == 2) guard_name = "舰长";
+                        if (json[i]['level'] == 0) guard_name = "总督";
+                        else if (json[i]['level'] == 1) guard_name = "提督";
+                        else if (json[i]['level'] == 2) guard_name = "舰长";
                         else guard_name = "其他";
                         level.innerText = guard_name;
 
@@ -962,16 +1067,16 @@
             httpRequest.setRequestHeader('Access-Control-Allow-Origin', '*');
             httpRequest.setRequestHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
             // 设置运行跨域操作  
-            httpRequest.withCredentials = true; 
+            httpRequest.withCredentials = true;
             // 发送请求  将请求参数写在URL中
             httpRequest.send();
-            httpRequest.onerror = function(error) { 
-                console.log("请求get_self_detail出错！" + error); 
+            httpRequest.onerror = function (error) {
+                console.log("请求get_self_detail出错！" + error);
                 layer.msg('请求get_self_detail出错！');
                 layer.close(load_index);
             };
-            httpRequest.ontimeout = function() { 
-                console.log("请求get_self_detail超时！"); 
+            httpRequest.ontimeout = function () {
+                console.log("请求get_self_detail超时！");
                 layer.msg('请求get_self_detail超时！');
                 layer.close(load_index);
             };
@@ -993,9 +1098,9 @@
             iframe.src = "https://api.live.bilibili.com/xlive/web-ucenter/user/following?page=1&page_size=20";
             const iframeWin = iframe.contentWindow || iframe;
             const iframeDoc = iframe.contentDocument || iframeWin.document;
-            
+
             let script = iframeDoc.createElement('SCRIPT');
-            
+
             script.append(`function sendWithoutOrigin(url) {
                 let request = new XMLHttpRequest();
             
@@ -1020,7 +1125,7 @@
                 console.log(json);
             }
             `);
-            
+
             iframeDoc.documentElement.appendChild(script);
 
             var uid = document.getElementById("input_uid_component").value;
@@ -1029,7 +1134,7 @@
             // iframeWin.sendWithoutOrigin(url);
             iframeWin.get_json();
         }
-        
+
         // 获取用户详情页信息
         function get_self_detail(uid) {
             // 构建url
@@ -1040,13 +1145,13 @@
             httpRequest.open('GET', url, true);
             // 发送请求  将请求参数写在URL中
             httpRequest.send();
-            httpRequest.onerror = function(error) { 
-                console.log("请求get_self_detail出错！" + error); 
+            httpRequest.onerror = function (error) {
+                console.log("请求get_self_detail出错！" + error);
                 layer.msg('请求get_self_detail出错！');
                 layer.close(load_index);
             };
-            httpRequest.ontimeout = function() { 
-                console.log("请求get_self_detail超时！"); 
+            httpRequest.ontimeout = function () {
+                console.log("请求get_self_detail超时！");
                 layer.msg('请求get_self_detail超时！');
                 layer.close(load_index);
             };
@@ -1065,10 +1170,10 @@
                         layer.open({
                             title: 'vtbs.moe',
                             content: '请求无详细数据，请确认用户uid 或 平台异常'
-                        });  
+                        });
                         return;
                     }
-                    
+
                     user_self_data_json = json;
                     generate_self_all();
 
@@ -1087,13 +1192,13 @@
             httpRequest.open('GET', url, true);
             // 发送请求  将请求参数写在URL中
             httpRequest.send();
-            httpRequest.onerror = function(error) { 
-                console.log("请求get_self_guard_detail出错！" + error); 
+            httpRequest.onerror = function (error) {
+                console.log("请求get_self_guard_detail出错！" + error);
                 layer.msg('请求get_self_guard_detail出错！');
                 layer.close(load_index);
             };
-            httpRequest.ontimeout = function() { 
-                console.log("请求get_self_guard_detail超时！"); 
+            httpRequest.ontimeout = function () {
+                console.log("请求get_self_guard_detail超时！");
                 layer.msg('请求get_self_guard_detail超时！');
                 layer.close(load_index);
             };
@@ -1112,7 +1217,7 @@
                         layer.open({
                             title: 'vtbs.moe',
                             content: '请求无详细数据，请确认用户uid 或 平台异常'
-                        });  
+                        });
                         return;
                     }
 
@@ -1176,7 +1281,7 @@
             document.getElementById("base_info_tbody").innerHTML = "";
 
             var json_len = user_base_data_json['data'].length;
-            console.log("json_len=" +　json_len);
+            console.log("json_len=" + json_len);
 
             var end_get_detail_flag = 1;
 
@@ -1222,7 +1327,7 @@
                 comment.id = user_base_data_json['data'][i]['id'];
                 comment.className = "layui-btn layui-btn-normal";
                 comment.style.float = "right";
-                comment.onclick = function() {
+                comment.onclick = function () {
                     show_hide_div('chart_main3', 'block');
                     // 获取当场弹幕数据
                     get_comment_data(this.id);
@@ -1320,11 +1425,11 @@
                 toolbox: {
                     show: true,
                     feature: {
-                        mark: {show: true},
-                        dataView: {show: true, readOnly: false},
-                        magicType: {show: true, type: ['line', 'bar']},
-                        restore: {show: true},
-                        saveAsImage: {show: true}
+                        mark: { show: true },
+                        dataView: { show: true, readOnly: false },
+                        magicType: { show: true, type: ['line', 'bar'] },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
                     },
                     right: '10%'
                 },
@@ -1407,16 +1512,16 @@
             var json1 = user_self_data_json;
             var len1 = json1.length;
             var json2 = [];
-            var temp_json = {"follower" : "", "time" : ""};
+            var temp_json = { "follower": "", "time": "" };
 
             for (var i = (len1 - 1); i >= 0; i--) {
-                temp_json = {"follower" : "", "time" : ""};
+                temp_json = { "follower": "", "time": "" };
                 var this_day = new Date(json1[i]['time']).getDate();
                 var next_day;
-                if((i - 1) >= 0) {
+                if ((i - 1) >= 0) {
                     next_day = new Date(json1[i - 1]['time']).getDate();
                 }
-                if(this_day == next_day) continue;
+                if (this_day == next_day) continue;
 
                 temp_json.follower = json1[i]["follower"];
                 temp_json.time = time_change(json1[i]['time'], 2);
@@ -1456,11 +1561,11 @@
                 toolbox: {
                     show: true,
                     feature: {
-                        mark: {show: true},
-                        dataView: {show: true, readOnly: false},
-                        magicType: {show: true, type: ['line', 'bar']},
-                        restore: {show: true},
-                        saveAsImage: {show: true}
+                        mark: { show: true },
+                        dataView: { show: true, readOnly: false },
+                        magicType: { show: true, type: ['line', 'bar'] },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
                     },
                     right: '10%'
                 },
@@ -1538,30 +1643,30 @@
             var json1 = comment_data_json;
             var len1 = json1["data"].length;
             var json2 = [];
-            var temp_json = {"count" : 0, "time" : ""};
+            var temp_json = { "count": 0, "time": "" };
 
             var count = 0;
             var last_time = "";
 
             // 数据转换为json2
             for (var i = (len1 - 1); i >= 0; i--) {
-                temp_json = {"count" : 0, "time" : ""};
+                temp_json = { "count": 0, "time": "" };
                 var this_time = time_change(json1["data"][i]["time"], 3);
                 // console.log("last_time:" + last_time + " this_time:" + this_time);
                 var text = "";
                 // 只统计弹幕（过滤其他如：礼物数据）
-                if(json1["data"][i].hasOwnProperty("text")) text = json1["data"][i]["text"];
+                if (json1["data"][i].hasOwnProperty("text")) text = json1["data"][i]["text"];
                 else text = "【";
-                if(i == (len1 - 1)) {
+                if (i == (len1 - 1)) {
                     last_time = this_time;
                     // 只计算非同传弹幕
-                    if(text.substring(0, 1) != "【") {
+                    if (text.substring(0, 1) != "【") {
                         count++;
                     }
                     continue;
-                } else if(i == 0) {
-                    if(this_time == last_time) {
-                        if(text.substring(0, 1) != "【") {
+                } else if (i == 0) {
+                    if (this_time == last_time) {
+                        if (text.substring(0, 1) != "【") {
                             count++;
                         }
                         temp_json.count = count;
@@ -1574,7 +1679,7 @@
                         json2.push(temp_json);
 
                         // 最后一个时间点录入
-                        if(text.substring(0, 1) != "【") {
+                        if (text.substring(0, 1) != "【") {
                             temp_json.count = 1;
                         } else {
                             temp_json.count = 0;
@@ -1583,8 +1688,8 @@
                         json2.push(temp_json);
                     }
                 } else {
-                    if(this_time == last_time) {
-                        if(text.substring(0, 1) != "【") {
+                    if (this_time == last_time) {
+                        if (text.substring(0, 1) != "【") {
                             count++;
                         }
                         continue;
@@ -1595,7 +1700,7 @@
                         json2.push(temp_json);
 
                         // 记录新节点
-                        if(text.substring(0, 1) != "【") {
+                        if (text.substring(0, 1) != "【") {
                             count = 1;
                         } else {
                             count = 0;
@@ -1637,11 +1742,11 @@
                 toolbox: {
                     show: true,
                     feature: {
-                        mark: {show: true},
-                        dataView: {show: true, readOnly: false},
-                        magicType: {show: true, type: ['line', 'bar']},
-                        restore: {show: true},
-                        saveAsImage: {show: true}
+                        mark: { show: true },
+                        dataView: { show: true, readOnly: false },
+                        magicType: { show: true, type: ['line', 'bar'] },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
                     },
                     right: '10%'
                 },
@@ -1712,11 +1817,93 @@
             window.addEventListener('resize', myChart.resize);
         };
 
+        // 查成分 成分饼图
+        function generate_chart4(json) {
+            var dom = document.getElementById('chart-container4');
+
+            var myChart = echarts.init(dom, null, {
+                renderer: 'canvas',
+                useDirtyRect: false
+            });
+            var app = {};
+            var option;
+
+            const legendData = [];
+            const seriesData = [];
+
+            // 创建一个Map对象，并对重复的uId进行计数
+            const uid_counter = new Map();
+            for (const item of json.data) {
+                const { uId, name } = item;
+                uid_counter.set(uId, (uid_counter.get(uId) || 0) + 1);
+            }
+
+            for (const [uid, count] of uid_counter) {
+                let temp_name = json.data.find(item => item.uId === uid).name;
+                legendData.push(temp_name);
+                seriesData.push({
+                    name: temp_name,
+                    value: count
+                });
+            }
+
+            const data = {
+                legendData: legendData,
+                seriesData: seriesData
+            };
+
+            myChart.showLoading();
+            myChart.hideLoading();
+            option = {
+                title: {
+                    text: '直播观看统计',
+                    subtext: '数据源自danmukus.com',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                legend: {
+                    show: false,
+                    type: 'scroll',
+                    orient: 'vertical',
+                    right: 10,
+                    top: 20,
+                    bottom: 20,
+                    data: data.legendData
+                },
+                series: [
+                    {
+                        top: 50,
+                        name: '昵称',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '50%'],
+                        data: data.seriesData,
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+            myChart.setOption(option);
+
+            if (option && typeof option === 'object') {
+                myChart.setOption(option);
+            }
+
+            window.addEventListener('resize', myChart.resize);
+        };
 
         // 生成所有个人页数据
         function generate_self_all() {
             generate_chart2();
-            
+
             document.getElementById("self_info_tbody").innerHTML = "";
 
             var json = user_self_data_json;
@@ -1737,16 +1924,16 @@
 
                 var this_day = new Date(json[i]['time']).getDate();
                 var next_day;
-                if((i - 1) >= 0) {
+                if ((i - 1) >= 0) {
                     next_day = new Date(json[i - 1]['time']).getDate();
                 }
                 // console.log("json[i]['time']:" + json[i]['time'] + " json[i-1]['time']" + json[i-1]['time']);
                 // console.log("this_day:" + this_day + " next_day:" + next_day);
-                if(this_day == next_day) continue;
+                if (this_day == next_day) continue;
 
                 follower.innerText = json[i]["follower"];
                 change.className = "change";
-                if(i != (len - 1)) {
+                if (i != (len - 1)) {
                     var change_num = parseInt(last_follower) - parseInt(json[i]["follower"]);
                     change.innerText = change_num;
                 } else {
@@ -1768,12 +1955,12 @@
 
             // 粉丝变化数据偏移
             var change_dom = document.getElementsByClassName("change");
-            for(var i = 0; i < change_dom.length; i++) {
-                if(i == (change_dom.length - 1)) {
+            for (var i = 0; i < change_dom.length; i++) {
+                if (i == (change_dom.length - 1)) {
                     change_dom[i].innerText = "0";
                 } else {
-                    change_dom[i].innerText = change_dom[i+1].innerText;
-                    if(parseInt(change_dom[i+1].innerText) > 0) change_dom[i].style.color = "#00da3c";
+                    change_dom[i].innerText = change_dom[i + 1].innerText;
+                    if (parseInt(change_dom[i + 1].innerText) > 0) change_dom[i].style.color = "#00da3c";
                     else change_dom[i].style.color = "#ec0000";
                 }
             }
@@ -1989,21 +2176,21 @@
         }
 
         function upload_file(source) {
-			var input = source;
-			var reader = new FileReader();
-			reader.readAsText(input.files[0]);
-			reader.onload = function() {
-				if(reader.result) {
-			        // 显示文件内容
-					temp_str = reader.result;
+            var input = source;
+            var reader = new FileReader();
+            reader.readAsText(input.files[0]);
+            reader.onload = function () {
+                if (reader.result) {
+                    // 显示文件内容
+                    temp_str = reader.result;
                     // console.log(temp_str);
                     var json = JSON.parse(temp_str);
                     console.log(json);
                     user_base_data_json = json;
                     generate_base_all();
-				}
-			};
-		}
+                }
+            };
+        }
 
     </script>
 </body>
